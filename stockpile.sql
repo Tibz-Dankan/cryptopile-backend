@@ -1,6 +1,6 @@
 CREATE DATABASE stockpile;
 
-CREATE TABLE register (
+CREATE TABLE registers (
     id BIGSERIAL PRIMARY KEY ,
    firstname VARCHAR(255) NOT NULL,
    lastname VARCHAR(255) NOT NULL,
@@ -10,7 +10,7 @@ CREATE TABLE register (
    UNIQUE (email) 
 );
 
-CREATE TABLE piles (
+CREATE TABLE pile (
     pile_id BIGSERIAL PRIMARY KEY,
     user_id INT NOT NULL,
     user_name VARCHAR(100) NOT NULL,
