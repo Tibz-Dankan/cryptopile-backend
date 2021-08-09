@@ -44,7 +44,6 @@ app.post("/register", async (req, res) => {
       } else {
         // Store the user details into the database
         const hashedPassword = await bcrypt.hash(password, 10); // hashing password
-        const hashedConfirm_password = await bcrypt.hash(confirm_password, 10); // hashing confirm_password
         const sql2 =
           "INSERT INTO registers(firstname, lastname, email,gender, password) VALUES($1,$2,$3,$4,$5) RETURNING *";
         await pool.connect();
