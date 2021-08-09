@@ -4,7 +4,8 @@
   "description": "",
   "main": "App.js",
   "scripts": {
-    "start": "node App.js"
+    "start": "node App.js",
+    "server": "nodemon App.js"
   },
   "author": "Tibz",
   "license": "ISC",
