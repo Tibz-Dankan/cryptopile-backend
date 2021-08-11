@@ -20,6 +20,15 @@ CREATE TABLE pile (
     date_of_add TIMESTAMP
 );
 
+
+CREATE TABLE secretes (
+secrete_id BIGSERIAL PRIMARY KEY,
+user_id INT NOT NULL,
+user_name VARCHAR(50) NOT NULL,
+secrete_title VARCHAR(250) NOT NULL,
+secrete_description VARCHAR(400) NOT NULL
+);
+
 --    To add the columns named  date&time, updated ,detele to store the deleteled data from the pile table
 
 -- ALTER TABLE pile ADD COLUMN date_of_add DATE;
