@@ -4,7 +4,7 @@ const pile = require("./pile");
 const app = express();
 const fileuploads = require("./fileupload");
 // const theSecretes = require("./theSecretes");
-const { encrypt, decrypt } = require("./crypto");
+// const { encrypt, decrypt } = require("./crypto");
 app.use("/", fileuploads);
 
 // Register a new user
