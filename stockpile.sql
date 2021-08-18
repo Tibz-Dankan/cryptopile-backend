@@ -1,33 +1,44 @@
-CREATE DATABASE stockpile;
+-- should be commented wen pushing into production
+-- CREATE DATABASE stockpile;
 
-CREATE TABLE registers (
-    id BIGSERIAL PRIMARY KEY ,
-   firstname VARCHAR(255) NOT NULL,
-   lastname VARCHAR(255) NOT NULL,
-   email VARCHAR(255) NOT NULL,
-   gender VARCHAR(50) NOT NULL,
-   password VARCHAR(255) NOT NULL,
-   UNIQUE (email) 
-);
-
-CREATE TABLE pile (
-    pile_id BIGSERIAL PRIMARY KEY,
-    user_id INT NOT NULL,
-    user_name VARCHAR(100) NOT NULL,
-    title VARCHAR(300) NOT NULL,
-    description VARCHAR(600) NOT NULL,
-    time_of_add TIME,
-    date_of_add TIMESTAMP
-);
+-- should be commented out wen pushing into production
+-- CREATE TABLE registers (
+--     id BIGSERIAL PRIMARY KEY ,
+--    firstname VARCHAR(255) NOT NULL,
+--    lastname VARCHAR(255) NOT NULL,
+--    email VARCHAR(255) NOT NULL,
+--    gender VARCHAR(50) NOT NULL,
+--    password VARCHAR(255) NOT NULL,
+--    UNIQUE (email) 
+-- );
 
 
+-- should be commented out wen puahsing into production
+-- CREATE TABLE pile (
+--     pile_id BIGSERIAL PRIMARY KEY,
+--     user_id INT NOT NULL,
+--     user_name VARCHAR(100) NOT NULL,
+--     title VARCHAR(300) NOT NULL,
+--     description VARCHAR(600) NOT NULL,
+--     time_of_add TIME,
+--     date_of_add TIMESTAMP
+-- );
+
+-- should be commented wen pushing into production
+-- delete the table secretes
+DROP TABLE secretes;
+
+-- adding the title_iv column and description_iv column and even to the production databsase (heroku)
 CREATE TABLE secretes (
 secrete_id BIGSERIAL PRIMARY KEY,
 user_id INT NOT NULL,
 user_name VARCHAR(50) NOT NULL,
-secrete_title VARCHAR(250) NOT NULL,
-secrete_description VARCHAR(400) NOT NULL
+secrete_title VARCHAR(300) NOT NULL,
+secrete_description VARCHAR(400) NOT NULL,
+iv VARCHAR(250) NOT NULL
 );
+
+
 
 --    To add the columns named  date&time, updated ,detele to store the deleteled data from the pile table
 
