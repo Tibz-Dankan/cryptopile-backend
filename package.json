@@ -2,10 +2,10 @@
   "name": "mystore",
   "version": "1.0.0",
   "description": "",
-  "main": "App.js",
+  "main": "app.js",
   "scripts": {
-    "start": "node App.js",
-    "server": "nodemon App.js"
+    "start": "node app.js",
+    "server": "nodemon app.js"
   },
   "author": "Tibz",
   "license": "ISC",
