@@ -7,7 +7,15 @@ require("dotenv").config();
 //https://stockpile-frontend.netlify.app/
 app.use(cors({ origin: true }));
 app.use(express.json());
-
+//Trial
+app.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  next();
+});
 // Add new content
 
 app.post("/api/pile/:userId", verifyToken, async (req, res) => {
