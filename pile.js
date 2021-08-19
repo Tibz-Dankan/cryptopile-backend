@@ -5,7 +5,7 @@ const pool = require("./dbConfig");
 const { verifyToken } = require("./verifyToken");
 require("dotenv").config();
 //https://stockpile-frontend.netlify.app/
-app.use(cors({ origin: "*" }));
+app.use(cors({ origin: true }));
 app.use(express.json());
 
 // Add new content
