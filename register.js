@@ -4,7 +4,6 @@ const cors = require("cors");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
-s
 const app = express();
 //https://stockpile-frontend.netlify.app/
 app.use(cors({ origin: "*" }));
