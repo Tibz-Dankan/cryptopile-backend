@@ -6,18 +6,18 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const app = express();
 //https://stockpile-frontend.netlify.app/
-app.use(cors({ origin: true }));
+app.use(cors({ origin: "https://stockpile-frontend.netlify.app" }));
 app.use(express.json());
 
 //trial
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
-  next();
-});
+// app.use((req, res, next) => {
+//   res.header("Access-Control-Allow-Origin", "*");
+//   res.header(
+//     "Access-Control-Allow-Headers",
+//     "Origin, X-Requested-With, Content-Type, Accept"
+//   );
+//   next();
+// });
 // get username for the profile and send to the frontend
 app.get("/api/getusername/:userId", async (req, res) => {
   try {
