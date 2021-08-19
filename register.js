@@ -4,9 +4,10 @@ const cors = require("cors");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
-
+s
 const app = express();
-app.use(cors({ origin: "https://stockpile-frontend.netlify.app" }));
+//https://stockpile-frontend.netlify.app/
+app.use(cors({ origin: "*" }));
 app.use(express.json());
 
 // get username for the profile and send to the frontend
