@@ -3,9 +3,11 @@ const pool = require("./dbConfig");
 const cors = require("cors");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const bodyParser = require("body-parser");
 require("dotenv").config();
 const app = express();
 app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 //https://stockpile-frontend.netlify.app/
 app.use(cors({ origin: "https://stockpile-frontend.netlify.app" }));
 
