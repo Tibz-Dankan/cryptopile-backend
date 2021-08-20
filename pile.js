@@ -4,9 +4,9 @@ const cors = require("cors");
 const pool = require("./dbConfig");
 const { verifyToken } = require("./verifyToken");
 require("dotenv").config();
+app.use(express.json());
 //https://stockpile-frontend.netlify.app/
 app.use(cors({ origin: "https://stockpile-frontend.netlify.app" }));
-app.use(express.json());
 //Trial
 // app.use(function (req, res, next) {
 //   res.header("Access-Control-Allow-Origin", "*");

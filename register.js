@@ -5,9 +5,9 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const app = express();
+app.use(express.json());
 //https://stockpile-frontend.netlify.app/
 app.use(cors({ origin: "https://stockpile-frontend.netlify.app" }));
-app.use(express.json());
 
 //trial
 // app.use((req, res, next) => {
