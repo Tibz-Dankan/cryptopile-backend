@@ -8,7 +8,8 @@ require("dotenv").config();
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 //https://stockpile-frontend.netlify.app/
-app.use(cors({ origin: "https://stockpile-frontend.netlify.app" }));
+// app.use(cors({ origin: "https://stockpile-frontend.netlify.app" }));
+app.use(cors());
 //Trial
 // app.use(function (req, res, next) {
 //   res.header("Access-Control-Allow-Origin", "*");
@@ -75,6 +76,7 @@ app.get(`/api/getpile/:userId`, verifyToken, async (req, res) => {
   try {
     const { userId } = req.params;
     const sql1 = "SELECT * FROM pile WHERE user_id = $1";
+    await pool.connect();
     const getPile = await pool.query(sql1, [userId]);
     const response = res.json(getPile);
     console.log(response);

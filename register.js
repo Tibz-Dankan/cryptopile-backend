@@ -9,8 +9,8 @@ const app = express();
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 //https://stockpile-frontend.netlify.app/
-app.use(cors({ origin: "https://stockpile-frontend.netlify.app" }));
-
+// app.use(cors({ origin: "https://stockpile-frontend.netlify.app" }));
+app.use(cors());
 //trial
 // app.use((req, res, next) => {
 //   res.header("Access-Control-Allow-Origin", "*");
@@ -25,6 +25,7 @@ app.get("/api/getusername/:userId", async (req, res) => {
   try {
     const { userId } = req.params;
     const sql1 = "SELECT firstname, lastname  FROM registers WHERE id = $1";
+    await pool.connect();
     const response = await pool.query(sql1, [userId]);
     const sendUserName = res.json(response.rows[0]);
     console.log(sendUserName);
