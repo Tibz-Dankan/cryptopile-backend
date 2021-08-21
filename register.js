@@ -9,8 +9,7 @@ const app = express();
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 //https://stockpile-frontend.netlify.app/
-// app.use(cors({ origin: "https://stockpile-frontend.netlify.app" }));
-app.use(cors());
+app.use(cors({ origin: "https://stockpile-frontend.netlify.app" }));
 //trial
 // app.use((req, res, next) => {
 //   res.header("Access-Control-Allow-Origin", "*");

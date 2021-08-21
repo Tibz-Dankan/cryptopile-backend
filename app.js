@@ -3,11 +3,9 @@ const register = require("./register");
 const pile = require("./pile");
 const app = express();
 const fileuploads = require("./fileupload");
-const cors = require("cors");
 // const theSecretes = require("./theSecretes");
 
 app.use("/", fileuploads);
-// app.use(cors({ origin: "https://stockpile-frontend.netlify.app" }));
 // Register a new user
 app.use("/", register);
 

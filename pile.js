@@ -8,8 +8,7 @@ require("dotenv").config();
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 //https://stockpile-frontend.netlify.app/
-// app.use(cors({ origin: "https://stockpile-frontend.netlify.app" }));
-app.use(cors());
+app.use(cors({ origin: "https://stockpile-frontend.netlify.app" }));
 //Trial
 // app.use(function (req, res, next) {
 //   res.header("Access-Control-Allow-Origin", "*");
