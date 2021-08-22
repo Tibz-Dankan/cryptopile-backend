@@ -49,8 +49,8 @@ app.post("/register", async (req, res) => {
     } else {
       // check whether the email exists
       const sql = "SELECT * FROM registers WHERE email = $1";
-      const emailCheck = await pool.query(sql, [email]);
-      if (emailCheck.rows.length > 0) {
+      const emailCheckExistance = await pool.query(sql, [email]);
+      if (emailCheckExistance.rows.length > 0) {
         res.send({ msgEmail: "Email Aldready Exists ! " });
       } else {
         // Store the user details into the database

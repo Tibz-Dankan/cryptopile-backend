@@ -7,17 +7,9 @@ const { verifyToken } = require("./verifyToken");
 require("dotenv").config();
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-//https://stockpile-frontend.netlify.app/
+//cors here
 app.use(cors({ origin: "https://stockpile-frontend.netlify.app" }));
-//Trial
-// app.use(function (req, res, next) {
-//   res.header("Access-Control-Allow-Origin", "*");
-//   res.header(
-//     "Access-Control-Allow-Headers",
-//     "Origin, X-Requested-With, Content-Type, Accept"
-//   );
-//   next();
-// });
+
 // Add new content
 
 app.post("/api/pile/:userId", verifyToken, async (req, res) => {
@@ -38,11 +30,10 @@ app.post("/api/pile/:userId", verifyToken, async (req, res) => {
     const minutes = date.getMinutes();
     const seconds = date.getSeconds();
     const current_time = `${hours}:${minutes}:${seconds}`;
-    // query to get the username and user_id from the register table
 
     await pool.connect();
     // first get user firstname and id from register table
-    const sql1 = "SELECT * FROM test WHERE id = $1";
+    const sql1 = "SELECT * FROM registers WHERE id = $1";
     const getUserFirstnameAndUserId = await pool.query(sql1, [userId]);
     const user = getUserFirstnameAndUserId.rows;
     const user_id = getUserFirstnameAndUserId.rows[0].id;
@@ -51,6 +42,7 @@ app.post("/api/pile/:userId", verifyToken, async (req, res) => {
     if (user.length > 0) {
       const sql2 =
         "INSERT INTO pile(title, description, user_id, user_name, date_of_add, time_of_add) VALUES($1, $2, $3, $4, $5, $6)  RETURNING *";
+      await pool.connect();
       const addNewContent = await pool.query(sql2, [
         title,
         description,
@@ -62,7 +54,7 @@ app.post("/api/pile/:userId", verifyToken, async (req, res) => {
       const response = await res.json(addNewContent.rows[0]);
       console.log(response);
     } else {
-      // wen mo user in the database
+      // when no user in the database
       res.send({ msg: "user does not exist in the database" });
     }
   } catch (err) {
@@ -71,7 +63,7 @@ app.post("/api/pile/:userId", verifyToken, async (req, res) => {
 });
 
 // Provide (get) the content
-app.get(`/api/getpile/:userId`, verifyToken, async (req, res) => {
+app.get("/api/getpile/:userId", verifyToken, async (req, res) => {
   try {
     const { userId } = req.params;
     const sql1 = "SELECT * FROM pile WHERE user_id = $1";
