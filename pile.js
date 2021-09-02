@@ -1,12 +1,10 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const bodyParser = require("body-parser");
 const pool = require("./dbConfig");
 const { verifyToken } = require("./verifyToken");
 require("dotenv").config();
 app.use(express.json());
-app.use(bodyParser.urlencoded({ extended: false }));
 // app.use(cors({ origin: "https://stockpile-frontend.netlify.app" }));
 app.use(cors());
 // Add new content

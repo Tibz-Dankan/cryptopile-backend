@@ -4,6 +4,7 @@ const pile = require("./pile");
 const app = express();
 const fileuploads = require("./fileupload");
 const theSecretes = require("./theSecretes");
+const { memoryUsage } = require("./memoryUsage");
 
 app.use("/", fileuploads);
 // Register a new user
@@ -14,6 +15,8 @@ app.use("/", pile);
 
 // The user secretes
 app.use("/", theSecretes);
+// call the memory usage function here
+memoryUsage();
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () =>
