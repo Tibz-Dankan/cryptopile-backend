@@ -3,7 +3,7 @@ const register = require("./register");
 const pile = require("./pile");
 const app = express();
 const fileuploads = require("./fileupload");
-const theSecretes = require("./theSecretes");
+const secretes = require("./secretes");
 const { memoryUsage } = require("./memoryUsage");
 
 app.use("/", fileuploads);
@@ -14,7 +14,7 @@ app.use("/", register);
 app.use("/", pile);
 
 // The user secretes
-app.use("/", theSecretes);
+app.use("/", secretes);
 // call the memory usage function here
 memoryUsage();
 
