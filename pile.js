@@ -7,8 +7,8 @@ const { verifyToken } = require("./verifyToken");
 require("dotenv").config();
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cors({ origin: "https://stockpile-frontend.netlify.app" }));
-// app.use(cors());
+// app.use(cors({ origin: "https://stockpile-frontend.netlify.app" }));
+app.use(cors());
 // Add new content
 
 app.post("/api/pile/:userId", verifyToken, async (req, res) => {
