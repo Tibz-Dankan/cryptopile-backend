@@ -7,8 +7,8 @@ require("dotenv").config();
 app.use(express.json());
 // app.use(cors({ origin: "https://stockpile-frontend.netlify.app" }));
 app.use(cors());
-// Add new content
 
+// Add new content
 app.post("/api/pile/:userId", verifyToken, async (req, res) => {
   try {
     //the id params
@@ -74,18 +74,55 @@ app.get("/api/getpile/:userId", verifyToken, async (req, res) => {
 });
 
 // Edit the content
+// Edit the title
+app.put("/api/edit-pile-title/:pile_id", verifyToken, async (req, res) => {
+  const { pile_id } = req.params;
+  const { title } = req.body;
+  const sql1 = "UPDATE pile SET title = $1 WHERE pile_id = $2";
+  const updatePileTitle = await pool.query(sql1, [title, pile_id]);
+  const response = res.json(updatePileTitle);
+  console.log(response);
+});
+// Edit the description
+app.put(
+  "/api/edit-pile-description/:pile_id",
+  verifyToken,
+  async (req, res) => {
+    const { pile_id } = req.params;
+    const { description } = req.body;
+    const sql1 = "UPDATE pile SET description = $1 WHERE pile_id = $2";
+    const updatePileDescription = await pool.query(sql1, [
+      description,
+      pile_id,
+    ]);
+    const response = res.json(updatePileDescription);
+    console.log(response);
+  }
+);
 
 //Delete the content
-app.delete("/api/deletepile/:pile_id", verifyToken, async (res, req) => {
+//Delete  pile title and pile description
+app.delete("/api/delete-pile/:pile_id", verifyToken, async (req, res) => {
   try {
     const { pile_id } = req.params;
-    const sql1 = "DELETE * FROM pile WHERE pile_id = $1";
-    const deletePile = await query(sql1, [pile_id]);
+    const sql1 = "DELETE FROM pile WHERE pile_id = $1";
+    await pool.connect();
+    const deletePile = await pool.query(sql1, [pile_id]);
     const response = res.json(deletePile);
     console.log(response);
   } catch (error) {
     console.log(error);
   }
 });
+
+//Delete all the pile
+
+// Features to be added in the future
+// Note the features are not in any order
+// Email verification during signup (Mail gun  to send the emails)
+//Account recovery incase password forgotten (still Mail gun involved)
+// Authentication with Google api, facebook api, And Github api
+// All pictures with cloudinary (profile pictures, background pictures and any necessary form of pictures)
+// Date and time of creating an account by the user
 
 module.exports = app;
