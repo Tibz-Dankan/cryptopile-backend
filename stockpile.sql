@@ -24,6 +24,10 @@
 --     date_of_add TIMESTAMP
 -- );
 
+-- add column storage_date and drop columns time_of_add and date_of_add
+ALTER TABLE pile ADD COLUMN storage_date TIMESTAMP WITH TIME ZONE;
+ALTER TABLE pile DROP time_of_add;
+ALTER TABLE pile DROP date_of_add;
 -- should be commented wen pushing into production
 -- delete the table secretes
 DROP TABLE secretes;
@@ -60,3 +64,10 @@ iv VARCHAR(250) NOT NULL
 -- ALTER TABLE pile DROP time_of_add;
 
      /*The to add the data and time automatically to all The Tables*/
+
+
+     -- This is my testing table and should not be sent into production
+--  CREATE TABLE test_gender (
+-- secrete_id BIGSERIAL PRIMARY KEY,
+-- gender VARCHAR(50) 
+-- );

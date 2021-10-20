@@ -11,42 +11,29 @@ app.use(cors());
 // Add new content
 app.post("/api/pile/:userId", verifyToken, async (req, res) => {
   try {
-    //the id params
-    const { userId } = req.params; // to be used ti get the user
+    const { userId } = req.params;
     const { title } = req.body;
     const { description } = req.body;
-    //date and time
-    const date = new Date();
-    // date
-    //  const dates = date.getDate()   // gives the day of the month
-    //  const month = date.getMonth()   // gives the month
-    //  const year = date.getFullYear()      //gives the year
-    //  const current_date =`${year}-${month}-${dates}`
-    // // time
-    const hours = date.getHours();
-    const minutes = date.getMinutes();
-    const seconds = date.getSeconds();
-    const current_time = `${hours}:${minutes}:${seconds}`;
+    const { storageDate } = req.body;
 
     await pool.connect();
-    // first get user firstname and id from register table
+    // Getting user's firstName and id from register table
     const sql1 = "SELECT * FROM registers WHERE id = $1";
-    const getUserFirstnameAndUserId = await pool.query(sql1, [userId]);
-    const user = getUserFirstnameAndUserId.rows;
-    const user_id = getUserFirstnameAndUserId.rows[0].id;
-    const user_name = getUserFirstnameAndUserId.rows[0].firstname;
+    const getUserFirstNameAndUserId = await pool.query(sql1, [userId]);
+    const user = getUserFirstNameAndUserId.rows;
+    const user_id = getUserFirstNameAndUserId.rows[0].id;
+    const user_name = getUserFirstNameAndUserId.rows[0].firstname;
     console.log(user);
     if (user.length > 0) {
       const sql2 =
-        "INSERT INTO pile(title, description, user_id, user_name, date_of_add, time_of_add) VALUES($1, $2, $3, $4, $5, $6)  RETURNING *";
+        "INSERT INTO pile(title, description, user_id, user_name, storage_date) VALUES($1, $2, $3, $4, $5)  RETURNING *";
       await pool.connect();
       const addNewContent = await pool.query(sql2, [
         title,
         description,
         user_id,
         user_name,
-        date,
-        current_time,
+        storageDate,
       ]);
       const response = await res.json(addNewContent.rows[0]);
       console.log(response);
@@ -101,7 +88,7 @@ app.put(
 );
 
 //Delete the content
-//Delete  pile title and pile description
+//Delete  pile title and pile descriptions
 app.delete("/api/delete-pile/:pile_id", verifyToken, async (req, res) => {
   try {
     const { pile_id } = req.params;

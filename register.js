@@ -3,13 +3,27 @@ const pool = require("./dbConfig");
 const cors = require("cors");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const bodyParser = require("body-parser");
 require("dotenv").config();
 const app = express();
 app.use(express.json());
-app.use(bodyParser.urlencoded({ extended: false }));
 // app.use(cors({ origin: "https://stockpile-frontend.netlify.app" }));
 app.use(cors());
+
+// for testing purposes and should not be sent into production or even github
+app.post("/gender", async (req, res) => {
+  try {
+    const { gender } = req.body;
+    const response = await pool.query(
+      "INSERT INTO test_gender(gender) VALUES($1) RETURNING *",
+      [gender]
+    );
+    console.log(response);
+    res.json(response);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 // get username for the profile and send to the frontend
 app.get("/api/getusername/:userId", async (req, res) => {
   try {
