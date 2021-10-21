@@ -35,4 +35,5 @@ const sendVerificationEmail = (userEmail) => {
 };
 
 // route to verify the user email
+// continue reasoning from here next time
 (module.exports = app), { sendVerificationEmail };
