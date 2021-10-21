@@ -1,5 +1,6 @@
 const express = require("express");
 const pool = require("./dbConfig");
+// const verifyEmail = require("./verifyEmail");
 const cors = require("cors");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -8,21 +9,6 @@ const app = express();
 app.use(express.json());
 // app.use(cors({ origin: "https://stockpile-frontend.netlify.app" }));
 app.use(cors());
-
-// for testing purposes and should not be sent into production or even github
-app.post("/gender", async (req, res) => {
-  try {
-    const { gender } = req.body;
-    const response = await pool.query(
-      "INSERT INTO test_gender(gender) VALUES($1) RETURNING *",
-      [gender]
-    );
-    console.log(response);
-    res.json(response);
-  } catch (error) {
-    console.log(error);
-  }
-});
 
 // get username for the profile and send to the frontend
 app.get("/api/getusername/:userId", async (req, res) => {
@@ -43,10 +29,11 @@ app.post("/register", async (req, res) => {
   try {
     const { firstname } = req.body;
     const { lastname } = req.body;
-    const { email } = req.body;
+    var { email } = req.body;
     const { gender } = req.body;
     const { password } = req.body;
     const { confirm_password } = req.body;
+    const { is_verified_email } = req.body;
 
     // Ensure that password and confirm password are the same
     if (password != confirm_password) {
@@ -61,7 +48,7 @@ app.post("/register", async (req, res) => {
         // Store the user details into the database
         const hashedPassword = await bcrypt.hash(password, 10); // hashing password
         const sql2 =
-          "INSERT INTO registers(firstname, lastname, email,gender, password) VALUES($1,$2,$3,$4,$5) RETURNING *";
+          "INSERT INTO registers(firstname, lastname, email,gender, password,is_verified_email) VALUES($1,$2,$3,$4,$5,$6) RETURNING *";
         await pool.connect();
         const registerNewUser = await pool.query(sql2, [
           firstname,
@@ -69,9 +56,18 @@ app.post("/register", async (req, res) => {
           email,
           gender,
           hashedPassword,
+          is_verified_email,
         ]);
         const response = res.json(registerNewUser.rows[0]);
         console.log(response);
+
+        //verify the user email
+        if (response.statusCode === 200) {
+          //code to verify the user email
+          // app.use("/", verifyEmail);
+        } else {
+          //something went wrong  maybe user details not stored in the database
+        }
       }
     }
   } catch (err) {
