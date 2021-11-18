@@ -5,7 +5,7 @@ const pool = require("./dbConfig");
 const { verifyToken } = require("./verifyToken");
 require("dotenv").config();
 app.use(express.json());
-// app.use(cors({ origin: "https://stockpile-frontend.netlify.app" }));
+// app.use(cors({ origin: "https://cryptopile.netlify.app" }));
 app.use(cors());
 
 // Add new content
