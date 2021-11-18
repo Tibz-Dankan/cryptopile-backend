@@ -9,7 +9,7 @@ app.use(cors({ origin: "https://cryptopile.netlify.app" }));
 // app.use(cors());
 
 // Add new content
-app.post("/api/pile/:userId", verifyToken, async (req, res) => {
+app.post("#/api/pile/:userId", verifyToken, async (req, res) => {
   try {
     const { userId } = req.params;
     const { title } = req.body;
