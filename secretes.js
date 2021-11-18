@@ -6,8 +6,8 @@ const { encrypt, decrypt } = require("./crypto");
 
 const app = express();
 app.use(express.json());
-app.use(cors());
-//app.use(cors({origin:"https://stockpile-frontend.netlify.app"}));
+// app.use(cors());
+app.use(cors({ origin: "https://cryptopile.netlify.app" }));
 
 // keep the secretes in the database
 app.post("/api/secretepile/:userId", verifyToken, async (req, res) => {
