@@ -9,7 +9,7 @@ app.use(cors({ origin: "https://cryptopile.netlify.app" }));
 // app.use(cors());
 
 // Add new content
-app.post("#/api/pile/:userId", verifyToken, async (req, res) => {
+app.post("/api/pile/:userId", verifyToken, async (req, res) => {
   try {
     const { userId } = req.params;
     const { title } = req.body;
@@ -111,5 +111,6 @@ app.delete("/api/delete-pile/:pile_id", verifyToken, async (req, res) => {
 // Authentication with Google api, facebook api, And Github api
 // All pictures with cloudinary (profile pictures, background pictures and any necessary form of pictures)
 // Date and time of creating an account by the user
+// cater for te age case when the token is deleted
 
 module.exports = app;
