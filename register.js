@@ -102,7 +102,7 @@ app.post("/verify-user-email", async (req, res) => {
 });
 
 // Login a user
-app.post("/login", async (req, res) => {
+app.post("/#/login", async (req, res) => {
   try {
     const { email } = req.body;
     const { password } = req.body;
