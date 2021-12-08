@@ -15,7 +15,6 @@
 --Adding column to check email verifaction status
 ALTER TABLE registers ADD COLUMN is_verified_email BOOLEAN;
 ALTER TABLE registers DROP is_verified;
-ALTER TABLE registers ADD COLUMN verification_code INT;
 
 
 -- should be commented out wen puahsing into production
