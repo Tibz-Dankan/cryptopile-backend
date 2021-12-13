@@ -7,8 +7,8 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const app = express();
 app.use(express.json());
-// app.use(cors({ origin: "https://cryptopile.netlify.app" }));
-app.use(cors());
+app.use(cors({ origin: "https://cryptopile.netlify.app" }));
+// app.use(cors());
 
 // get username for the profile and send to the frontend
 app.get("/api/getusername/:userId", async (req, res) => {
