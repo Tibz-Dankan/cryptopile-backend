@@ -50,7 +50,7 @@ app.post("/api/pile/:userId", verifyToken, async (req, res) => {
 app.get("/api/getpile/:userId", verifyToken, async (req, res) => {
   try {
     const { userId } = req.params;
-    const sql1 = "SELECT * FROM pile WHERE user_id = $1 ORDER BY pile_id ASC";
+    const sql1 = "SELECT * FROM pile WHERE user_id = $1 ORDER BY pile_id ASC"; // in ascending order
     await pool.connect();
     const getPile = await pool.query(sql1, [userId]);
     const response = res.json(getPile);
