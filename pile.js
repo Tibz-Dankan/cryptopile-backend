@@ -1,12 +1,12 @@
 const express = require("express");
 const app = express();
-const cors = require("cors");
 const pool = require("./dbConfig");
 const { verifyToken } = require("./verifyToken");
+const { localUrl, productionUrl } = require("./url");
 require("dotenv").config();
 app.use(express.json());
-// app.use(cors({ origin: "https://cryptopile.netlify.app" }));
-app.use(cors());
+
+localUrl || productionUrl;
 
 // Add new content
 app.post("/api/pile/:userId", verifyToken, async (req, res) => {

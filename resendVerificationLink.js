@@ -1,13 +1,13 @@
 const express = require("express");
 const app = express();
-const cors = require("cors");
 const pool = require("./dbConfig");
 const { randomNumber } = require("./generateRandomNumber");
 const { sendEmailVerificationLink } = require("./sendVerificationEmail");
+const { localUrl, productionUrl } = require("./url");
 require("dotenv").config();
 app.use(express.json());
-// app.use(cors({ origin: "https://cryptopile.netlify.app" }));
-app.use(cors());
+
+localUrl || productionUrl;
 
 app.post("/resend-verification-link", async (req, res) => {
   try {

@@ -1,15 +1,15 @@
 const express = require("express");
 const pool = require("./dbConfig");
 const { sendEmailVerificationLink } = require("./sendVerificationEmail");
-const cors = require("cors");
+const { localUrl, productionUrl } = require("./url");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const emailExistence = require("email-existence");
 require("dotenv").config();
 const app = express();
 app.use(express.json());
-// app.use(cors({ origin: "https://cryptopile.netlify.app" }));
-app.use(cors());
+
+localUrl || productionUrl;
 
 // get username for the profile and send to the frontend
 app.get("/api/getusername/:userId", async (req, res) => {

@@ -1,13 +1,12 @@
 const express = require("express");
-const cors = require("cors");
 const pool = require("./dbConfig");
 const { randomNumber } = require("./generateRandomNumber");
 const { sendPasswordResetCode } = require("./sendPasswordResetCode");
-const { query } = require("express");
+const { localUrl, productionUrl } = require("./url");
 const app = express();
 app.use(express.json());
-// app.use(cors({ origin: "https://cryptopile.netlify.app" }));
-app.use(cors());
+
+localUrl || productionUrl;
 
 // sending verification code to user email
 app.post("/forgot-password", async (req, res) => {
