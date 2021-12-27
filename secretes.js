@@ -1,12 +1,13 @@
 const express = require("express");
 const pool = require("./dbConfig");
+const cors = require("cors");
 const { verifyToken } = require("./verifyToken");
-const { localUrl, productionUrl } = require("./url");
 const { encrypt, decrypt } = require("./crypto");
+require("dotenv").config();
 const app = express();
 app.use(express.json());
 
-localUrl || productionUrl;
+app.use(cors() || cors({ origin: process.env.PRODUCTION_URL }));
 
 // keep the secretes in the database
 app.post("api/secretepile/:userId", verifyToken, async (req, res) => {

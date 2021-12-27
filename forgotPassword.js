@@ -1,12 +1,13 @@
 const express = require("express");
 const pool = require("./dbConfig");
+const cors = require("cors");
 const { randomNumber } = require("./generateRandomNumber");
 const { sendPasswordResetCode } = require("./sendPasswordResetCode");
-const { localUrl, productionUrl } = require("./url");
+require("dotenv").config();
 const app = express();
 app.use(express.json());
 
-localUrl || productionUrl;
+app.use(cors() || cors({ origin: process.env.PRODUCTION_URL }));
 
 // sending verification code to user email
 app.post("/forgot-password", async (req, res) => {

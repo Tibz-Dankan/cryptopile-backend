@@ -1,11 +1,12 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
+const cors = require("cors");
 const pool = require("./dbConfig");
-const { localUrl, productionUrl } = require("./url");
+require("dotenv").config();
 const app = express();
 app.use(express.json());
 
-localUrl || productionUrl;
+app.use(cors() || cors({ origin: process.env.PRODUCTION_URL }));
 
 // sending verification code to user email
 app.post("/reset-password/:userId", async (req, res) => {

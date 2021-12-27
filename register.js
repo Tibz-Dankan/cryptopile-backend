@@ -4,12 +4,13 @@ const { sendEmailVerificationLink } = require("./sendVerificationEmail");
 const { localUrl, productionUrl } = require("./url");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const cors = require("cors");
 const emailExistence = require("email-existence");
 require("dotenv").config();
 const app = express();
 app.use(express.json());
 
-localUrl || productionUrl;
+app.use(cors() || cors({ origin: process.env.PRODUCTION_URL }));
 
 // get username for the profile and send to the frontend
 app.get("/api/getusername/:userId", async (req, res) => {

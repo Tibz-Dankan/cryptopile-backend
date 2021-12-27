@@ -1,13 +1,13 @@
 const express = require("express");
 const app = express();
+const cors = require("cors");
 const pool = require("./dbConfig");
 const { randomNumber } = require("./generateRandomNumber");
 const { sendEmailVerificationLink } = require("./sendVerificationEmail");
-const { localUrl, productionUrl } = require("./url");
 require("dotenv").config();
 app.use(express.json());
 
-localUrl || productionUrl;
+app.use(cors() || cors({ origin: process.env.PRODUCTION_URL }));
 
 app.post("/resend-verification-link", async (req, res) => {
   try {
