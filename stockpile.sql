@@ -1,5 +1,6 @@
 -- should be commented wen pushing into production
 -- CREATE DATABASE stockpile;
+--REMEMBER TO CHANGE YOUR SQL NAMING TO CAMEL CASE
 
 -- should be commented out wen pushing into production
 -- CREATE TABLE registers (

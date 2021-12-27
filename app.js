@@ -1,6 +1,10 @@
 const express = require("express");
 const register = require("./register");
 const pile = require("./pile");
+const forgotPassword = require("./forgotPassword");
+const passwordResetCode = require("./passwordResetCode");
+const resetPassword = require("./resetPassword");
+const resendVerificationLink = require("./resendVerificationLink");
 const app = express();
 const fileuploads = require("./fileupload");
 const secretes = require("./secretes");
@@ -12,6 +16,16 @@ app.use("/", register);
 
 // The pile section
 app.use("/", pile);
+
+// password reset section
+// forgot password
+app.use("/", forgotPassword);
+//password reset code
+app.use("/", passwordResetCode);
+// resetting the password
+app.use("/", resetPassword);
+// resending the verification link
+app.use("/", resendVerificationLink);
 
 // The user secretes
 app.use("/", secretes);

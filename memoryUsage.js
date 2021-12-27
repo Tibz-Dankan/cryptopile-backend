@@ -10,7 +10,7 @@ const memoryUsage = () => {
       "heapTotal",
       numeral(heapTotal).format("0.0 ib")
     );
-  }, 20000);
+  }, 100000);
 };
 
 //export the memoryUsage to the main file
