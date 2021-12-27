@@ -1,7 +1,6 @@
 const express = require("express");
 const pool = require("./dbConfig");
 const { sendEmailVerificationLink } = require("./sendVerificationEmail");
-const { localUrl, productionUrl } = require("./url");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const cors = require("cors");

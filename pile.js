@@ -6,7 +6,7 @@ const { verifyToken } = require("./verifyToken");
 require("dotenv").config();
 app.use(express.json());
 
-app.use(cors() || cors({ origin: "https://cryptopile.netlify.app" }));
+app.use(cors() || cors({ origin: process.env.PRODUCTION_URL }));
 
 // Add new content
 app.post("/api/pile/:userId", verifyToken, async (req, res) => {
