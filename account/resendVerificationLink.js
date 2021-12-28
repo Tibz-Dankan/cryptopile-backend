@@ -18,11 +18,26 @@ app.post("/resend-verification-link", async (req, res) => {
       const userEmail = response.rows[0].email;
       const userId = response.rows[0].id;
       const verificationCode = randomNumber();
-      sendEmailVerificationLink(userEmail, userId, verificationCode);
-      console.log(`Email resent to ${userEmail} with code ${verificationCode}`);
-      res.send({
-        verificationLinkStatus: "verification link sent successfully !",
-      });
+      const sqlQuery2 =
+        "UPDATE registers SET verification_code = $1 WHERE id = $2 RETURNING *";
+      const updateVerificationCode = await pool.query(sqlQuery2, [
+        verificationCode,
+        userId,
+      ]);
+      if (updateVerificationCode.rows.length > 0) {
+        sendEmailVerificationLink(userEmail, userId, verificationCode);
+        console.log(
+          `Email resent to ${userEmail} with code ${verificationCode}`
+        );
+        res.send({
+          verificationLinkStatus: "verification link sent successfully !",
+        });
+      } else {
+        console.log("Failed to update the verification code ! in the database");
+        res.send({
+          verificationLinkStatus: "Internal server error occurred !",
+        });
+      }
     } else {
       res.send({ verificationLinkStatus: "An error occurred email not sent" });
     }
