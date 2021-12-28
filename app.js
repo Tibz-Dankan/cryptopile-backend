@@ -1,7 +1,5 @@
 const express = require("express");
 const signup = require("./account/signup");
-const login = require("./account/login");
-const verifyUserAccount = require("./account/verifyUserAccount");
 const pile = require("./pile");
 const forgotPassword = require("./changepassword/forgotPassword");
 const passwordResetCode = require("./changepassword/passwordResetCode");
@@ -15,10 +13,6 @@ const { memoryUsage } = require("./memoryUsage");
 app.use("/", fileuploads);
 // signup a new user
 app.use("/", signup);
-// login user
-app.use("/", login);
-//verify user account
-app.use("/", verifyUserAccount);
 
 // The pile section
 app.use("/", pile);
