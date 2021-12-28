@@ -1,10 +1,12 @@
 const express = require("express");
 const signup = require("./account/signup");
+const login = require("./account/login");
+const verifyUserAccount = require("./account/verifyUserAccount");
+const resendVerificationLink = require("./account/resendVerificationLink");
 const pile = require("./pile");
 const forgotPassword = require("./changepassword/forgotPassword");
 const passwordResetCode = require("./changepassword/passwordResetCode");
 const resetPassword = require("./changepassword/resetPassword");
-const resendVerificationLink = require("./account/resendVerificationLink");
 const app = express();
 const fileuploads = require("./fileupload");
 const secretes = require("./secretes");
@@ -13,6 +15,13 @@ const { memoryUsage } = require("./memoryUsage");
 app.use("/", fileuploads);
 // signup a new user
 app.use("/", signup);
+// login a user
+app.use("/", login);
+// verify user account
+app.use("/", verifyUserAccount);
+
+// resending the verification link
+app.use("/", resendVerificationLink);
 
 // The pile section
 app.use("/", pile);
@@ -24,8 +33,6 @@ app.use("/", forgotPassword);
 app.use("/", passwordResetCode);
 // resetting the password
 app.use("/", resetPassword);
-// resending the verification link
-app.use("/", resendVerificationLink);
 
 // The user secretes
 app.use("/", secretes);
