@@ -1,7 +1,7 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
 const cors = require("cors");
-const pool = require("./dbConfig");
+const pool = require("./../dbConfig");
 require("dotenv").config();
 const app = express();
 app.use(express.json());

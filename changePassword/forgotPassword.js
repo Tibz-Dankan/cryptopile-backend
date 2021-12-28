@@ -1,7 +1,7 @@
 const express = require("express");
-const pool = require("./dbConfig");
+const pool = require("./../dbConfig");
 const cors = require("cors");
-const { randomNumber } = require("./generateRandomNumber");
+const { randomNumber } = require("./../generateRandomNumber");
 const { sendPasswordResetCode } = require("./sendPasswordResetCode");
 require("dotenv").config();
 const app = express();
