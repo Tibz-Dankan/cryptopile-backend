@@ -73,7 +73,7 @@ app.post("/signup", async (req, res) => {
   }
 });
 
-//  function  to register new user here
+//  function  to signup new user here
 const registerNewUserDetails = async (
   firstName,
   lastName,
@@ -104,8 +104,6 @@ const registerNewUserDetails = async (
       isVerifiedEmail,
       emailVerificationCode,
     ]);
-    console.log("Logging Logging Logging"); // to be removed
-    //send a verification code to user email   using a function of its own
     if (registerNewUser.rows.length > 0) {
       console.log(registerNewUser.rows[0]);
       const userEmail = registerNewUser.rows[0].email;
@@ -115,6 +113,7 @@ const registerNewUserDetails = async (
       res.json(registerNewUser.rows[0]);
       console.log(`Email sent: ${registerNewUser.rows[0].email}`);
     } else {
+      console.log("user signup failed !");
       res.send({ msg: "Internal server error" });
     }
   }
