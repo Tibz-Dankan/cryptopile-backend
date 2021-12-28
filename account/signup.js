@@ -2,7 +2,6 @@ const express = require("express");
 const pool = require("./../dbConfig");
 const { sendEmailVerificationLink } = require("./sendVerificationEmail");
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
 const cors = require("cors");
 const emailExistence = require("email-existence");
 require("dotenv").config();
@@ -27,7 +26,7 @@ app.get("/api/getusername/:userId", async (req, res) => {
 });
 
 // Register a new user
-app.post("/register", async (req, res) => {
+app.post("/signup", async (req, res) => {
   try {
     const { firstName } = req.body;
     const { lastName } = req.body;
