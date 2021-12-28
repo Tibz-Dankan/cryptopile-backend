@@ -30,6 +30,7 @@ app.post("/verify-user-email/:id", async (req, res) => {
         console.log(`${userEmail} has been verified`);
         res.send({
           verificationStatusMsg: userEmail + " has been fully verified",
+          code: codeStoredInDatabase,
         });
       } else {
         console.log(
