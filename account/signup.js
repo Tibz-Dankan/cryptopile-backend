@@ -66,8 +66,6 @@ app.post("/signup", async (req, res) => {
         }
       }
     });
-
-    // some curly brace removed from here
   } catch (err) {
     console.error(err);
   }
