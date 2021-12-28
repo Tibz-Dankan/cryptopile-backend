@@ -158,13 +158,13 @@ app.post("/verify-user-email/:id", async (req, res) => {
       console.log(``);
       res.send({
         verificationStatusMsg:
-          "sorry, an error occurred during email verification process",
+          "Sorry, an error occurred during email verification process",
       });
     }
   } else {
     res.send({
       verificationStatusMsg:
-        "sorry, an error occurred during email verification process",
+        "Sorry, an error occurred during email verification process",
     });
   }
 });
