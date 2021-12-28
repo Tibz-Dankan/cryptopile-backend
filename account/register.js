@@ -1,5 +1,5 @@
 const express = require("express");
-const pool = require("./dbConfig");
+const pool = require("./../dbConfig");
 const { sendEmailVerificationLink } = require("./sendVerificationEmail");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");

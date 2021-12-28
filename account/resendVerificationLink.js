@@ -1,8 +1,8 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const pool = require("./dbConfig");
-const { randomNumber } = require("./generateRandomNumber");
+const pool = require("./../dbConfig");
+const { randomNumber } = require("./../generateRandomNumber");
 const { sendEmailVerificationLink } = require("./sendVerificationEmail");
 require("dotenv").config();
 app.use(express.json());
