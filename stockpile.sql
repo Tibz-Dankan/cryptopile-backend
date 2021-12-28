@@ -15,7 +15,7 @@
 
 --Adding column to check email verifaction status
 ALTER TABLE registers ADD COLUMN is_verified_email BOOLEAN;
-ALTER TABLE registers DROP is_verified;
+-- ALTER TABLE registers DROP is_verified;
 
 
 -- should be commented out wen puahsing into production
@@ -30,22 +30,22 @@ ALTER TABLE registers DROP is_verified;
 -- );
 
 -- add column storage_date and drop columns time_of_add and date_of_add
-ALTER TABLE pile ADD COLUMN storage_date TIMESTAMP WITH TIME ZONE;
-ALTER TABLE pile DROP time_of_add;
-ALTER TABLE pile DROP date_of_add;
+-- ALTER TABLE pile ADD COLUMN storage_date TIMESTAMP WITH TIME ZONE;
+-- ALTER TABLE pile DROP time_of_add;
+-- ALTER TABLE pile DROP date_of_add;
 -- should be commented wen pushing into production
 -- delete the table secretes
-DROP TABLE secretes;
+-- DROP TABLE secretes;
 
 -- adding the title_iv column and description_iv column and even to the production databsase (heroku)
-CREATE TABLE secretes (
-secrete_id BIGSERIAL PRIMARY KEY,
-user_id INT NOT NULL,
-user_name VARCHAR(50) NOT NULL,
-secrete_title VARCHAR(300) NOT NULL,
-secrete_description VARCHAR(400) NOT NULL,
-iv VARCHAR(250) NOT NULL
-);
+-- CREATE TABLE secretes (
+-- secrete_id BIGSERIAL PRIMARY KEY,
+-- user_id INT NOT NULL,
+-- user_name VARCHAR(50) NOT NULL,
+-- secrete_title VARCHAR(300) NOT NULL,
+-- secrete_description VARCHAR(400) NOT NULL,
+-- iv VARCHAR(250) NOT NULL
+-- );
 
 
 
