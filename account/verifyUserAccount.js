@@ -19,6 +19,8 @@ app.post("/verify-user-email/:id", async (req, res) => {
     const userEmail = verifyUserEmail.rows[0].email;
     const userId = verifyUserEmail.rows[0].id;
     console.log(`Email being verified exists: ${userEmail}`);
+    // to be implemented
+    // check if verification status of the user is true and if so alert the user that is already verified and into the account
     if (codeStoredInDatabase === verificationCode) {
       // change the verification status
       const sqlQuery2 =
