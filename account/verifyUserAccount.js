@@ -42,13 +42,14 @@ app.post("/verify-user-email/:id", async (req, res) => {
         });
       }
     } else {
-      console.log(``);
+      console.log("Failed to match the client and server codes !");
       res.send({
         verificationStatusMsg:
           "Sorry, an error occurred during email verification process",
       });
     }
   } else {
+    console.log("The user altered the verification link");
     res.send({
       verificationStatusMsg:
         "Sorry, an error occurred during email verification process",
