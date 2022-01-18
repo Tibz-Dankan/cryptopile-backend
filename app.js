@@ -10,6 +10,7 @@ const resetPassword = require("./changePassword/resetPassword");
 const app = express();
 const fileuploads = require("./fileupload");
 const secretes = require("./secretes");
+const admin = require("./admin/admin");
 const { memoryUsage } = require("./memoryUsage");
 
 app.use("/", fileuploads);
@@ -33,6 +34,9 @@ app.use("/", forgotPassword);
 app.use("/", passwordResetCode);
 // resetting the password
 app.use("/", resetPassword);
+
+// admin
+app.use("/", admin);
 
 // The user secretes
 app.use("/", secretes);

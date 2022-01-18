@@ -16,13 +16,14 @@ app.post("/reset-password/:userId", async (req, res) => {
     const { userId } = req.params;
     const newHashedPassword = await bcrypt.hash(newPassword, 10);
     const sqlQuery =
-      "UPDATE registers SET password = $1 WHERE id = $2 AND email =$3 RETURNING *";
-    await pool.connect();
+      "UPDATE accounts SET password = $1 WHERE id = $2 AND email =$3 RETURNING *";
+    // await pool.connect();
     const response = await pool.query(sqlQuery, [
       newHashedPassword,
       userId,
       userEmail,
     ]);
+    // await pool.end();
     if (response.rows.length > 0) {
       console.log("Password reset to: " + response.rows[0].password);
       res.send({ passwordResetMsg: "password-reset-successful" });

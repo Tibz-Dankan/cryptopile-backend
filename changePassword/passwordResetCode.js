@@ -11,14 +11,15 @@ app.use(cors() || cors({ origin: process.env.PRODUCTION_URL }));
 app.post("/password-reset-code", async (req, res) => {
   try {
     const { passwordResetCode } = req.body;
-    const sqlQuery = "SELECT * FROM registers WHERE verification_code =$1";
-    await pool.connect();
+    const sqlQuery = "SELECT * FROM accounts WHERE verificationCode = $1";
+    // await pool.connect();
     const response = await pool.query(sqlQuery, [passwordResetCode]);
+    // await pool.end();
     if (response.rows.length > 0) {
       res.send(response.rows[0]);
       console.log(
         "password reset code: " +
-          response.rows[0].verification_code +
+          response.rows[0].verificationCode +
           " is correct and valid"
       );
     } else {

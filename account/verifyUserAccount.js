@@ -11,23 +11,24 @@ app.use(cors() || cors({ origin: process.env.PRODUCTION_URL }));
 app.post("/verify-user-email/:id", async (req, res) => {
   const { id } = req.params;
   const { verificationCode } = req.body;
-  const sqlQuery1 = "SELECT * FROM registers WHERE id = $1";
-  await pool.connect;
+  const sqlQuery1 = "SELECT * FROM accounts WHERE userId = $1";
+  // await pool.connect();
   const verifyUserEmail = await pool.query(sqlQuery1, [id]);
   if (verifyUserEmail.rows.length > 0) {
-    const codeStoredInDatabase = verifyUserEmail.rows[0].verification_code;
+    const codeStoredInDatabase = verifyUserEmail.rows[0].verificationcode;
     const userEmail = verifyUserEmail.rows[0].email;
-    const userId = verifyUserEmail.rows[0].id;
+    const userId = verifyUserEmail.rows[0].userid;
     console.log(`Email being verified exists: ${userEmail}`);
     // to be implemented
     // check if verification status of the user is true and if so alert the user that is already verified and into the account
     if (codeStoredInDatabase === verificationCode) {
       // change the verification status
       const sqlQuery2 =
-        "UPDATE registers SET is_verified_email = TRUE WHERE id = $1 RETURNING *";
+        "UPDATE accounts SET isVerifiedEmail = TRUE WHERE userId = $1 RETURNING *";
       const changeVerificationStatusToTrue = await pool.query(sqlQuery2, [
         userId,
       ]);
+      // await pool.end();
       if (changeVerificationStatusToTrue.rows.length > 0) {
         console.log(`${userEmail} has been verified`);
         res.send({

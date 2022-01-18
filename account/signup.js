@@ -15,8 +15,8 @@ app.get("/api/getusername/:userId", async (req, res) => {
   try {
     const { userId } = req.params;
     const sqlQuery1 =
-      "SELECT firstname, lastname  FROM registers WHERE id = $1";
-    await pool.connect();
+      "SELECT firstName, lastName  FROM accounts WHERE userid = $1";
+    // await pool.connect();
     const response = await pool.query(sqlQuery1, [userId]);
     const sendUserName = res.json(response.rows[0]);
     console.log(sendUserName);
@@ -31,7 +31,6 @@ app.post("/signup", async (req, res) => {
     const { firstName } = req.body;
     const { lastName } = req.body;
     const { email } = req.body;
-    const { gender } = req.body;
     const { password } = req.body;
     const { isVerifiedEmail } = req.body;
     const emailVerificationCode = Math.floor(Math.random() * 1000000);
@@ -40,23 +39,20 @@ app.post("/signup", async (req, res) => {
       if (error) {
         res.send({
           emailValidationMsg:
-            "Sorry, an error occurred during process of checking this email's existence ",
+            "Sorry, an error occurred during process of validating your email",
         });
         console.log(error);
       } else {
         if (response) {
-          // function to register a new user
           registerNewUserDetails(
             firstName,
             lastName,
             email,
-            gender,
             password,
             isVerifiedEmail,
             emailVerificationCode,
             res
           );
-          // console log email validity
           console.log("Email validity is :" + response);
         } else {
           res.send({
@@ -76,43 +72,49 @@ const registerNewUserDetails = async (
   firstName,
   lastName,
   email,
-  gender,
   password,
   isVerifiedEmail,
   emailVerificationCode,
   res
 ) => {
   //  store user and send verification link to his/her email
-  const sqlQuery = "SELECT * FROM registers WHERE email = $1";
+  const sqlQuery = "SELECT * FROM accounts WHERE email = $1";
+  // await pool.connect();
   const checkEmailInDatabase = await pool.query(sqlQuery, [email]);
+  console.log(checkEmailInDatabase.rows);
+
   if (checkEmailInDatabase.rows.length > 0) {
     res.send({ emailValidationMsg: "This email already registered !" });
+    // await pool.end();
   } else {
     // Store the user details into the database
     const hashedPassword = await bcrypt.hash(password, 10); // hashing password
     const sqlQuery2 =
-      "INSERT INTO registers(firstname, lastname, email,gender, password,is_verified_email, verification_code) VALUES($1,$2,$3,$4,$5,$6,$7) RETURNING *";
-    await pool.connect();
+      "INSERT INTO accounts(firstName, lastName, email, password, isVerifiedEmail, verificationCode) VALUES($1,$2,$3,$4,$5,$6) RETURNING *";
     const registerNewUser = await pool.query(sqlQuery2, [
       firstName,
       lastName,
       email,
-      gender, // to be removed
       hashedPassword,
       isVerifiedEmail,
       emailVerificationCode,
     ]);
+
     if (registerNewUser.rows.length > 0) {
       console.log(registerNewUser.rows[0]);
       const userEmail = registerNewUser.rows[0].email;
-      const verificationCode = registerNewUser.rows[0].verification_code;
-      const userId = registerNewUser.rows[0].id;
+      const verificationCode = registerNewUser.rows[0].verificationcode;
+      const userId = registerNewUser.rows[0].userid;
       sendEmailVerificationLink(userEmail, userId, verificationCode);
       res.json(registerNewUser.rows[0]);
       console.log(`Email sent: ${registerNewUser.rows[0].email}`);
+      console.log(`userId sent: ${registerNewUser.rows[0].userid}`);
+      console.log(`code sent: ${registerNewUser.rows[0].verificationcode}`);
+      // await pool.end();
     } else {
       console.log("user signup failed !");
       res.send({ msg: "Internal server error" });
+      // await pool.end();
     }
   }
 };

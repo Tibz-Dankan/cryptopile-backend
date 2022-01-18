@@ -1,42 +1,45 @@
--- should be commented wen pushing into production
--- CREATE DATABASE stockpile;
+
 --REMEMBER TO CHANGE YOUR SQL NAMING TO CAMEL CASE
-
--- should be commented out wen pushing into production
--- CREATE TABLE registers (
---     id BIGSERIAL PRIMARY KEY ,
---    firstname VARCHAR(255) NOT NULL,
---    lastname VARCHAR(255) NOT NULL,
---    email VARCHAR(255) NOT NULL,
---    gender VARCHAR(50) NOT NULL,
---    password VARCHAR(255) NOT NULL,
---    UNIQUE (email) 
--- );
-
---Adding column to check email verifaction status
--- ALTER TABLE registers ADD COLUMN is_verified_email BOOLEAN;
-ALTER TABLE registers ADD COLUMN verification_code INT;
--- ALTER TABLE registers DROP is_verified;
+CREATE DATABASE cryptopile;
 
 
--- should be commented out wen puahsing into production
--- CREATE TABLE pile (
---     pile_id BIGSERIAL PRIMARY KEY,
---     user_id INT NOT NULL,
---     user_name VARCHAR(100) NOT NULL,
---     title VARCHAR(300) NOT NULL,
---     description VARCHAR(600) NOT NULL,
---     time_of_add TIME,
---     date_of_add TIMESTAMP
--- );
+CREATE TABLE accounts (
+   userId SERIAL PRIMARY KEY ,
+   firstName VARCHAR(255) NOT NULL,
+   lastName VARCHAR(255) NOT NULL,
+   email VARCHAR(255) NOT NULL,
+   password VARCHAR(255) NOT NULL,
+   verificationCode INTEGER NOT NULL,
+   isVerifiedEmail BOOLEAN NOT NULL,
+   UNIQUE (email) 
+);
 
--- add column storage_date and drop columns time_of_add and date_of_add
--- ALTER TABLE pile ADD COLUMN storage_date TIMESTAMP WITH TIME ZONE;
--- ALTER TABLE pile DROP time_of_add;
--- ALTER TABLE pile DROP date_of_add;
--- should be commented wen pushing into production
--- delete the table secretes
--- DROP TABLE secretes;
+CREATE TABLE admin (
+adminId SERIAL NOT NULL,
+adminFirstName VARCHAR(200) NOT NULL,
+adminLastName VARCHAR(200) NOT NULL,
+adminEmail VARCHAR(200) NOT NULL,
+adminCode INTEGER NOT NULL,
+adminPassword VARCHAR(200) NOT NULL
+);
+
+
+
+CREATE TABLE todo (
+    todoId SERIAL PRIMARY KEY,
+    userId INTEGER NOT NULL,
+    userName VARCHAR(100) NOT NULL,
+    description VARCHAR(600) NOT NULL,
+    timeOfAdd TIME,
+    dateOfAdd TIMESTAMP
+);
+
+CREATE TABLE imageUrl (
+     imageUrlId SERIAL PRIMARY KEY,
+     imageUrlCategory VARCHAR (50) NOT NULL,
+     imageUrlOwnerId INTEGER NOT NULL DEFAULT 20221501, 
+     imageUrls VARCHAR(250) NOT NULL
+);
 
 -- adding the title_iv column and description_iv column and even to the production databsase (heroku)
 -- CREATE TABLE secretes (

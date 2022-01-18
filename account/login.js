@@ -13,15 +13,16 @@ app.post("/login", async (req, res) => {
   try {
     const { email } = req.body;
     const { password } = req.body;
-    await pool.connect();
-    const sqlQuery1 = "SELECT * FROM registers WHERE email =$1";
+    // await pool.connect();
+    const sqlQuery1 = "SELECT * FROM accounts WHERE email =$1";
     const response = await pool.query(sqlQuery1, [email]);
 
     if (response.rows.length > 0) {
       const userEmail = response.rows[0].email;
       const passwordFromDatabase = response.rows[0].password;
-      const isVerifiedEmail = response.rows[0].is_verified_email;
-      userId = response.rows[0].id;
+      const isVerifiedEmail = response.rows[0].isverifiedemail;
+      userId = response.rows[0].userid;
+
       if (isVerifiedEmail == true) {
         if (await bcrypt.compare(password, passwordFromDatabase)) {
           // assign token to the user
@@ -31,19 +32,22 @@ app.post("/login", async (req, res) => {
             loginStatusMsg: "You have entered an incorrect password !",
           });
           console.log("Incorrect password");
+          // await pool.end();
         }
       } else {
         res.send({
           loginStatusMsg:
-            "This email is partly registered and not yet verified, so go to the email inbox and click the link we sent to complete registration.",
+            "This email is partly registered and not yet verified, so go to the email inbox and confirm the email we sent to complete registration.",
           partlyRegisteredEmail: `${userEmail}`,
         });
         console.log(`Email ${userEmail} is partly registered`);
         // keep this email being sent to the localStorage
+        // await pool.end();
       }
     } else {
       res.send({ loginStatusMsg: "User does not exist !" });
       console.log("User does not exist");
+      // await pool.end();
     }
   } catch (err) {
     console.log(err);
@@ -52,23 +56,29 @@ app.post("/login", async (req, res) => {
 
 // function to assign a user a token
 const assignTokenToUser = (res, userId) => {
-  jwt.sign({ userId }, process.env.ACCESS_SECRETE_TOKEN, (err, accessToken) => {
-    if (err) {
-      res.send({
-        Error: err,
-        loginStatusMsg: "Error occurred when generating the token",
-      });
-    } else {
-      // give the user the token
-      res.send({
-        loginStatusMsg: "You have successfully logged in",
-        userId,
-        accessToken,
-      });
-      console.log(response.rows[0]);
-      console.log(userId);
+  jwt.sign(
+    { userId },
+    process.env.ACCESS_SECRETE_TOKEN,
+    async (err, accessToken) => {
+      if (err) {
+        res.send({
+          Error: err,
+          loginStatusMsg: "Error occurred when generating the token",
+        });
+        // await pool.end();
+      } else {
+        // give the user the token
+        res.send({
+          loginStatusMsg: "You have successfully logged in",
+          userId,
+          accessToken,
+        });
+        console.log(response.rows[0]);
+        console.log(userId);
+        // await pool.end();
+      }
     }
-  });
+  );
 };
 
 module.exports = app;
