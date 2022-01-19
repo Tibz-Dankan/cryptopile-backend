@@ -11,6 +11,7 @@ const app = express();
 const fileuploads = require("./fileupload");
 const secretes = require("./secretes");
 const admin = require("./admin/admin");
+const userProfile = require("./userProfile/userProfile");
 const { memoryUsage } = require("./memoryUsage");
 
 app.use("/", fileuploads);
@@ -37,6 +38,9 @@ app.use("/", resetPassword);
 
 // admin
 app.use("/", admin);
+
+// user profile
+app.use("/", userProfile);
 
 // The user secretes
 app.use("/", secretes);
