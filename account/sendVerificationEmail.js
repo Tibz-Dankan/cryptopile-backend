@@ -16,7 +16,7 @@ const sendEmailVerificationLink = (userEmail, userId, verificationCode) => {
   );
   // mail options
   const mailOptions = {
-    from: "CryptoPile <cryptopile20@gmail.com>",
+    from: `CryptoPile <${process.env.SENDERS_EMAIL}>`,
     to: `${userEmail}`,
     subject: "Email Confirmation",
     html: `<p> click the button below to confirm your email and complete the registration process <br/><br/>
