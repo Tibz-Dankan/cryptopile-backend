@@ -10,33 +10,34 @@ app.use(express.json());
 app.use(cors() || cors({ origin: process.env.PRODUCTION_URL }));
 
 // keep the secretes in the database
-app.post("api/secretepile/:userId", verifyToken, async (req, res) => {
+app.post("/api/secretepile/:userId", verifyToken, async (req, res) => {
   try {
+    console.log("REQUEST RECEIVED !");
     const { userId } = req.params;
     const { secrete_title } = req.body;
     const { secrete_description } = req.body;
     // get the username and user's registration
-    const sql1 = "SELECT firstname, id FROM registers WHERE id = $1";
+    const sql1 = "SELECT firstname, userid FROM accounts WHERE userid = $1";
     const getUsernameAndId = await pool.query(sql1, [userId]);
     //respond with  a json
     // const response = res.json(getUsernameAndId.rows[0]); // to be removed
     console.log(getUsernameAndId.rows[0]);
 
     const username = getUsernameAndId.rows[0].firstname;
-    const registrationId = getUsernameAndId.rows[0].id;
-    // tessting using the console
-    console.log(username);
-    console.log(registrationId);
-    // after getting username and id then keep the secretes
+    const registrationId = getUsernameAndId.rows[0].userid;
+
     if (getUsernameAndId.rows.length > 0) {
-      // Encrypt from here all the user data
       const encryptTitle = encrypt(secrete_title);
-      const encryptSecreteTitle = encryptTitle.content; // to be stored in the db
+      const encryptSecreteTitle = encryptTitle.content;
+      // console.log(encryptSecreteTitle);
+
       // iv for the title
       const iv = encryptTitle.iv; // and should be stored in the database
       const encryptDescription = encrypt(secrete_description);
       // for the description
       const encryptSecreteDescription = encryptDescription.content; // to be stored in the db
+      // console log for visualization purposes
+      console.log(encryptSecreteDescription);
 
       const sql2 =
         "INSERT  INTO  secretes (user_id, user_name, secrete_title, secrete_description, iv) VALUES($1, $2, $3, $4, $5) RETURNING *";
@@ -49,7 +50,6 @@ app.post("api/secretepile/:userId", verifyToken, async (req, res) => {
       ]);
       const results = res.json(storeSecretes.rows[0]);
       console.log(results);
-      console.log(storeSecretes);
     } else {
       res.send({ msg: "some thing went wrong !!!" });
     }
@@ -59,13 +59,13 @@ app.post("api/secretepile/:userId", verifyToken, async (req, res) => {
 });
 
 // get the user the secretes
-app.get("api/getsecretepile/:userId", verifyToken, async (req, res) => {
+app.get("/api/getsecretepile/:userId", verifyToken, async (req, res) => {
   try {
     const { userId } = req.params;
     // get user secretes
     const sql3 = "SELECT * FROM secretes WHERE user_id = $1";
     const getUserSecretes = await pool.query(sql3, [userId]);
-    //get verything in the database
+    //get everything in the database
     const getEverything = getUserSecretes.rows; //This is my target
     console.log(getEverything);
     // The data array
@@ -92,7 +92,7 @@ app.get("api/getsecretepile/:userId", verifyToken, async (req, res) => {
         userSecretes.push(secreteObject);
       }
     );
-    // send the secretses to the client
+    // send the secretes to the client
     res.send(userSecretes);
     // array to be sent to the client
     console.log(userSecretes);
