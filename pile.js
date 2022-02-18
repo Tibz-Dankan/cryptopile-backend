@@ -3,41 +3,43 @@ const cors = require("cors");
 const app = express();
 const pool = require("./dbConfig");
 const { verifyToken } = require("./verifyToken");
+const { encrypt, decrypt } = require("./crypto");
 require("dotenv").config();
 app.use(express.json());
 
 app.use(cors() || cors({ origin: process.env.PRODUCTION_URL }));
 
-// Add new content
+// Add todo description
 app.post("/api/pile/:userId", verifyToken, async (req, res) => {
   try {
     const { userId } = req.params;
     const { description } = req.body;
-    const { storageDate } = req.body;
+    const { dateOfAdd } = req.body;
+    const { timeOfAdd } = req.body;
+    const encryptTodoDescription = encrypt(description); //encrypting todo description
+    const encryptedTodoDescription = encryptTodoDescription.content; //encrypted todo description
+    const iv = encryptTodoDescription.iv; // initialization vector (iv)
 
-    // await pool.connect();
-    // Getting user's firstName and id from register table
+    // Getting user's firstname and id from accounts table
     const sql1 = "SELECT * FROM accounts WHERE userId = $1";
-    const getUserFirstNameAndUserId = await pool.query(sql1, [userId]);
-    const user = getUserFirstNameAndUserId.rows;
-    const user_id = getUserFirstNameAndUserId.rows[0].userid;
-    console.log(user_id); // to be removed
-    const user_name = getUserFirstNameAndUserId.rows[0].firstname;
-    console.log(user_name); // to be removed
-    console.log(user);
-    if (user.length > 0) {
+    const getUserAccount = await pool.query(sql1, [userId]);
+    const userAccount = getUserAccount.rows;
+    const userAccountId = getUserAccount.rows[0].userid;
+    const userAccountFirstName = getUserAccount.rows[0].firstname;
+    console.log(userAccount);
+    if (userAccount.length > 0) {
       const sql2 =
-        "INSERT INTO todo(userId, userName,description, timeOfAdd, dateOfAdd) VALUES($1, $2, $3, $4, $5)  RETURNING *";
-      const addNewContent = await pool.query(sql2, [
-        user_id,
-        user_name,
-        description,
-        storageDate,
-        storageDate,
+        "INSERT INTO todo(userId, userName, description, iv, timeOfAdd, dateOfAdd) VALUES($1, $2, $3, $4, $5, $6)  RETURNING *";
+      const insertTodoInDatabase = await pool.query(sql2, [
+        userAccountId,
+        userAccountFirstName,
+        encryptedTodoDescription,
+        iv,
+        timeOfAdd,
+        dateOfAdd,
       ]);
       // await pool.end();
-      const response = res.json(addNewContent.rows[0]);
-      console.log(response.rows[0]);
+      const response = res.json(insertTodoInDatabase.rows[0]);
     } else {
       // when no user in the database
       res.send({ msg: "user does not exist in the database" });
@@ -51,59 +53,73 @@ app.post("/api/pile/:userId", verifyToken, async (req, res) => {
 app.get("/api/getpile/:userId", verifyToken, async (req, res) => {
   try {
     const { userId } = req.params;
-    const sql1 = "SELECT * FROM todo WHERE userId = $1 ORDER BY todoId ASC"; // in ascending order
-    // await pool.connect();
-    const getPile = await pool.query(sql1, [userId]);
-    const response = res.json(getPile);
-    console.log(response);
-    // await pool.end();
+    const sql1 = "SELECT * FROM todo WHERE userId = $1 ORDER BY todoId ASC";
+    const getTodos = await pool.query(sql1, [userId]);
+    const encryptedTodos = getTodos.rows;
+    console.log(encryptedTodos);
+
+    const decryptedTodos = [];
+
+    encryptedTodos.forEach(
+      ({ todoid, userid, description, iv, timeofadd, dateofadd }) => {
+        //  decrypting todo description
+        const decryptedDescription = decrypt({
+          iv: `${iv}`,
+          content: `${description}`,
+        });
+        // object containing todo details
+        const todoObject = {
+          todoid: todoid,
+          userid: userid,
+          description: decryptedDescription,
+          timeofadd: timeofadd,
+          dateofadd: dateofadd,
+        };
+        decryptedTodos.push(todoObject);
+      }
+    );
+    // send todos to the client
+    res.send(decryptedTodos);
   } catch (err) {
     console.log(err);
   }
 });
 
-// Edit the content
-// Edit the title    //And to be deleted
-app.put("/api/edit-pile-title/:pile_id", verifyToken, async (req, res) => {
-  const { pile_id } = req.params;
-  const { title } = req.body;
-  const sql1 = "UPDATE todo SET title = $1 WHERE pile_id = $2";
-  // await pool.connect();
-  const updatePileTitle = await pool.query(sql1, [title, pile_id]);
-  const response = res.json(updatePileTitle);
-  console.log(response);
-  // await pool.end();
-});
-// Edit the description
+// Edit todo description
 app.put(
   "/api/edit-pile-description/:pile_id",
   verifyToken,
   async (req, res) => {
     const { pile_id } = req.params;
     const { description } = req.body;
-    const sql1 = "UPDATE todo SET description = $1 WHERE todoId = $2";
-    // await pool.connect();
+    const { dateOfUpdate } = req.body;
+    const { timeOfUpdate } = req.body;
+    const encryptTodoDescription = encrypt(description);
+    const encryptedTodoDescription = encryptTodoDescription.content;
+    const iv = encryptTodoDescription.iv;
+
+    const sql1 =
+      "UPDATE todo SET description = $1, iv = $2, timeOfAdd= $3, dateOfAdd = $4 WHERE todoId = $5";
     const updatePileDescription = await pool.query(sql1, [
-      description,
+      encryptedTodoDescription,
+      iv,
+      timeOfUpdate,
+      dateOfUpdate,
       pile_id,
     ]);
     const response = res.json(updatePileDescription);
-    console.log(response);
-    // await pool.end();
+    console.log(response.rows);
   }
 );
 
-//Delete the content
-//Delete  pile title and pile descriptions
+//Delete todo description
 app.delete("/api/delete-pile/:pile_id", verifyToken, async (req, res) => {
   try {
     const { pile_id } = req.params;
     const sql1 = "DELETE FROM todo WHERE todoId = $1";
-    // await pool.connect();
     const deletePile = await pool.query(sql1, [pile_id]);
     const response = res.json(deletePile);
     console.log(response);
-    // await pool.end();
   } catch (error) {
     console.log(error);
   }
