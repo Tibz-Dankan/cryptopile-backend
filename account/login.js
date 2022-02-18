@@ -13,7 +13,6 @@ app.post("/login", async (req, res) => {
   try {
     const { email } = req.body;
     const { password } = req.body;
-    // await pool.connect();
     const sqlQuery1 = "SELECT * FROM accounts WHERE email =$1";
     const response = await pool.query(sqlQuery1, [email]);
 
@@ -73,7 +72,6 @@ const assignTokenToUser = (res, userId) => {
           userId,
           accessToken,
         });
-        console.log(response.rows[0]);
         console.log(userId);
         // await pool.end();
       }
