@@ -31,7 +31,7 @@ app.post("/resend-verification-link", async (req, res) => {
           `Email resent to ${userEmail} with code ${verificationCode}`
         );
         res.send({
-          verificationLinkStatus: "verification email sent successfully !",
+          verificationLinkStatus: `Verification email has been successfully sent to ${userEmail} !`,
         });
         // await pool.end();
       } else {

@@ -20,7 +20,7 @@ app.post("/forgot-password", async (req, res) => {
     if (response.rows.length > 0) {
       const userId = response.rows[0].userid;
       const sqlQuery2 =
-        "UPDATE accounts SET verificationCode = $1 WHERE id = $2 RETURNING *";
+        "UPDATE accounts SET verificationCode = $1 WHERE userId = $2 RETURNING *";
       const updateCodeStoredInDatabase = await pool.query(sqlQuery2, [
         passwordResetCode,
         userId,
@@ -56,13 +56,13 @@ app.post("/resend-password-reset-code", async (req, res) => {
     const { userId } = req.body;
     const { userEmail } = req.body;
     passwordResetCode = randomNumber();
-    const sqlQuery = "SELECT * FROM accounts WHERE id =$1 AND email =$2";
+    const sqlQuery = "SELECT * FROM accounts WHERE userId =$1 AND email =$2";
     // await pool.connect();
     const response = await pool.query(sqlQuery, [userId, userEmail]);
     if (response.rows.length > 0) {
       const userId = response.rows[0].userid;
       const sqlQuery2 =
-        "UPDATE accounts SET verificationCode = $1 WHERE id = $2 RETURNING *";
+        "UPDATE accounts SET verificationCode = $1 WHERE userId = $2 RETURNING *";
       const updateCodeStoredInDatabase = await pool.query(sqlQuery2, [
         passwordResetCode,
         userId,

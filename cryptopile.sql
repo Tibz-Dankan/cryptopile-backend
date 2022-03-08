@@ -24,7 +24,7 @@ adminPassword VARCHAR(200) NOT NULL
 );
 
 
-DROP TABLE todo;
+-- DROP TABLE todo;
 CREATE TABLE todo (
     todoId SERIAL PRIMARY KEY,
     userId INTEGER NOT NULL,
@@ -45,7 +45,7 @@ CREATE TABLE imageUrl (
 
 -- TEMPORARY TABLE FOR TESTING PURPOSES
 -- SHOULD NOT BE CREATED IN PRODUCTION 
-DROP TABLE secretes;
+-- DROP TABLE secretes;
 CREATE TABLE secretes (
      secrete_id SERIAL PRIMARY KEY,
      user_id INTEGER  NOT NULL,
