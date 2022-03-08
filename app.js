@@ -3,7 +3,7 @@ const signup = require("./account/signup");
 const login = require("./account/login");
 const verifyUserAccount = require("./account/verifyUserAccount");
 const resendVerificationLink = require("./account/resendVerificationLink");
-const pile = require("./pile");
+const todos = require("./todos");
 const forgotPassword = require("./changePassword/forgotPassword");
 const passwordResetCode = require("./changePassword/passwordResetCode");
 const resetPassword = require("./changePassword/resetPassword");
@@ -25,8 +25,8 @@ app.use("/", verifyUserAccount);
 // resending the verification link
 app.use("/", resendVerificationLink);
 
-// The pile section
-app.use("/", pile);
+// The todos section
+app.use("/", todos);
 
 // password reset section
 // forgot password
