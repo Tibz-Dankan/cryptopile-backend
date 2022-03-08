@@ -43,17 +43,6 @@ CREATE TABLE imageUrl (
 );
 
 
--- TEMPORARY TABLE FOR TESTING PURPOSES
--- SHOULD NOT BE CREATED IN PRODUCTION 
--- DROP TABLE secretes;
-CREATE TABLE secretes (
-     secrete_id SERIAL PRIMARY KEY,
-     user_id INTEGER  NOT NULL,
-     user_name VARCHAR (250) NOT NULL,
-     secrete_title   VARCHAR (250) NOT NULL,
-     secrete_description VARCHAR (250) NOT NULL,
-     iv VARCHAR(60) NOT NULL
-);
 
 -- DROP THESE COLUMNS 
 ALTER TABLE todo DROP dateOfAdd;
