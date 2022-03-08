@@ -10,7 +10,7 @@ app.use(express.json());
 app.use(cors() || cors({ origin: process.env.PRODUCTION_URL }));
 
 // Add todo description
-app.post("/api/todo/:userId", verifyToken, async (req, res) => {
+app.post("/api/pile/:userId", verifyToken, async (req, res) => {
   try {
     const { userId } = req.params;
     const { description } = req.body;
