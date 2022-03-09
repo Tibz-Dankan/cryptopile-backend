@@ -8,13 +8,10 @@ const forgotPassword = require("./changePassword/forgotPassword");
 const passwordResetCode = require("./changePassword/passwordResetCode");
 const resetPassword = require("./changePassword/resetPassword");
 const app = express();
-const fileuploads = require("./fileupload");
-const secretes = require("./secretes");
 const admin = require("./admin/admin");
 const userProfile = require("./userProfile/userProfile");
 const { memoryUsage } = require("./memoryUsage");
 
-app.use("/", fileuploads);
 // signup a new user
 app.use("/", signup);
 // login a user
@@ -42,8 +39,6 @@ app.use("/", admin);
 // user profile
 app.use("/", userProfile);
 
-// The user secretes
-app.use("/", secretes);
 // call the memory usage function here
 memoryUsage();
 
