@@ -10,7 +10,7 @@ app.use(express.json());
 app.use(cors() || cors({ origin: process.env.PRODUCTION_URL }));
 
 // Add todo description
-app.post("/api/pile/:userId", verifyToken, async (req, res) => {
+app.post("/api/todo/:userId", verifyToken, async (req, res) => {
   try {
     const { userId } = req.params;
     const { description } = req.body;
@@ -50,7 +50,7 @@ app.post("/api/pile/:userId", verifyToken, async (req, res) => {
 });
 
 // Provide (get) the content
-app.get("/api/getpile/:userId", verifyToken, async (req, res) => {
+app.get("/api/get-todos/:userId", verifyToken, async (req, res) => {
   try {
     const { userId } = req.params;
     const sql1 = "SELECT * FROM todo WHERE userId = $1 ORDER BY todoId ASC";
@@ -86,38 +86,34 @@ app.get("/api/getpile/:userId", verifyToken, async (req, res) => {
 });
 
 // Edit todo description
-app.put(
-  "/api/edit-pile-description/:pile_id",
-  verifyToken,
-  async (req, res) => {
-    const { pile_id } = req.params;
-    const { description } = req.body;
-    const { dateOfUpdate } = req.body;
-    const { timeOfUpdate } = req.body;
-    const encryptTodoDescription = encrypt(description);
-    const encryptedTodoDescription = encryptTodoDescription.content;
-    const iv = encryptTodoDescription.iv;
+app.put("/api/edit-todo-description/:todoId", verifyToken, async (req, res) => {
+  const { todoId } = req.params;
+  const { description } = req.body;
+  const { dateOfUpdate } = req.body;
+  const { timeOfUpdate } = req.body;
+  const encryptTodoDescription = encrypt(description);
+  const encryptedTodoDescription = encryptTodoDescription.content;
+  const iv = encryptTodoDescription.iv;
 
-    const sql1 =
-      "UPDATE todo SET description = $1, iv = $2, timeOfAdd= $3, dateOfAdd = $4 WHERE todoId = $5";
-    const updatePileDescription = await pool.query(sql1, [
-      encryptedTodoDescription,
-      iv,
-      timeOfUpdate,
-      dateOfUpdate,
-      pile_id,
-    ]);
-    const response = res.json(updatePileDescription);
-    console.log(response.rows);
-  }
-);
+  const sql1 =
+    "UPDATE todo SET description = $1, iv = $2, timeOfAdd= $3, dateOfAdd = $4 WHERE todoId = $5";
+  const updatePileDescription = await pool.query(sql1, [
+    encryptedTodoDescription,
+    iv,
+    timeOfUpdate,
+    dateOfUpdate,
+    todoId,
+  ]);
+  const response = res.json(updatePileDescription);
+  console.log(response.rows);
+});
 
 //Delete todo description
-app.delete("/api/delete-pile/:pile_id", verifyToken, async (req, res) => {
+app.delete("/api/delete-todo/:todoId", verifyToken, async (req, res) => {
   try {
-    const { pile_id } = req.params;
+    const { todoId } = req.params;
     const sql1 = "DELETE FROM todo WHERE todoId = $1";
-    const deletePile = await pool.query(sql1, [pile_id]);
+    const deletePile = await pool.query(sql1, [todoId]);
     const response = res.json(deletePile);
     console.log(response);
   } catch (error) {
