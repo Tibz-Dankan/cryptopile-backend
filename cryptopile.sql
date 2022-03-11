@@ -24,7 +24,6 @@ adminPassword VARCHAR(200) NOT NULL
 );
 
 
--- DROP TABLE todo;
 CREATE TABLE todo (
     todoId SERIAL PRIMARY KEY,
     userId INTEGER NOT NULL,
@@ -35,11 +34,12 @@ CREATE TABLE todo (
     dateOfAdd TIMESTAMP
 );
 
+-- DROP TABLE imageUrl;
 CREATE TABLE imageUrl (
      imageUrlId SERIAL PRIMARY KEY,
      imageUrlCategory VARCHAR (50) NOT NULL,
      imageUrlOwnerId INTEGER NOT NULL DEFAULT 20221501, 
-     imageUrls VARCHAR(250) NOT NULL
+     imageUrl VARCHAR(250) NOT NULL DEFAULT "null"
 );
 
 
