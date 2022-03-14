@@ -10,21 +10,6 @@ app.use(express.json());
 
 app.use(cors() || cors({ origin: process.env.PRODUCTION_URL }));
 
-// get username for the profile and send to the frontend
-app.get("/api/getusername/:userId", async (req, res) => {
-  try {
-    const { userId } = req.params;
-    const sqlQuery1 =
-      "SELECT firstName, lastName  FROM accounts WHERE userid = $1";
-    // await pool.connect();
-    const response = await pool.query(sqlQuery1, [userId]);
-    const sendUserName = res.json(response.rows[0]);
-    console.log(sendUserName);
-  } catch (error) {
-    console.log(error);
-  }
-});
-
 // Register a new user
 app.post("/signup", async (req, res) => {
   try {
