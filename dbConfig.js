@@ -16,9 +16,9 @@ const connectionString = `postgresql://${process.env.DB_USER}:${process.env.DB_P
 
 const configForHerokuPostgres = {
   connectionString: isProduction ? process.env.DATABASE_URL : connectionString,
-  // ssl: {
-  //   rejectUnauthorized: false,
-  // },
+  ssl: {
+    rejectUnauthorized: false,
+  },
 };
 
 const pool = new pg.Client(configForHerokuPostgres); // for heroku platform
