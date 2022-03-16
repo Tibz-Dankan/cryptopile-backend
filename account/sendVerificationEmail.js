@@ -19,10 +19,10 @@ const sendEmailVerificationLink = (userEmail, userId, verificationCode) => {
     from: `CryptoPile <${process.env.SENDERS_EMAIL}>`,
     to: `${userEmail}`,
     subject: "Email Confirmation",
-    html: `<p> click the button below to confirm your email and complete the registration process <br/><br/>
-      <a href="http://localhost:3000/#/verify-user-email/?userId=${userId}&verificationCode=${verificationCode}"><button style="background-color:lightseagreen"> confirm email </button></a> <br/><br/> You received this email because you are signing up for <b> CryptoPile </b> </p>`,
     // html: `<p> click the button below to confirm your email and complete the registration process <br/><br/>
-    //   <a href="https://cryptopile.netlify.app/#/verify-user-email/?userId=${userId}&verificationCode=${verificationCode}"><button style="background-color:lightseagreen"> confirm email </button></a> <br/><br/> You received this email because you are signing up for <b> CryptoPile </b></p>`,
+    //   <a href="http://localhost:3000/#/verify-user-email/?userId=${userId}&verificationCode=${verificationCode}"><button style="background-color:lightseagreen"> confirm email </button></a> <br/><br/> You received this email because you are signing up for <b> CryptoPile </b> </p>`,
+    html: `<p> click the button below to confirm your email and complete the registration process <br/><br/>
+      <a href="https://cryptopile.netlify.app/#/verify-user-email/?userId=${userId}&verificationCode=${verificationCode}"><button style="background-color:lightseagreen"> confirm email </button></a> <br/><br/> You received this email because you are signing up for <b> CryptoPile </b></p>`,
   };
   // send email
   transporter.sendMail(mailOptions, (error, data) => {
@@ -32,6 +32,7 @@ const sendEmailVerificationLink = (userEmail, userId, verificationCode) => {
       console.log(`Message sent`);
       console.log(data);
     }
+    send;
   });
 };
 module.exports = { sendEmailVerificationLink };
