@@ -10,7 +10,6 @@ const verifyToken = (req, res, next) => {
       if (err) {
         res.send({
           Error: err,
-          messageDisplay: "Login required in order to add your information",
           messageCheck: "error",
         });
       } else {
