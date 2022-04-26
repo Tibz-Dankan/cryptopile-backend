@@ -32,6 +32,7 @@ const sendEmailVerificationLink = (userEmail, userId, verificationCode) => {
       console.log(`Message sent`);
       console.log(data);
     }
+    send;
   });
 };
 module.exports = { sendEmailVerificationLink };

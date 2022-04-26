@@ -22,27 +22,27 @@ app.post("/login", async (req, res) => {
       const isVerifiedEmail = response.rows[0].isverifiedemail;
       userId = response.rows[0].userid;
 
-      if (isVerifiedEmail == true) {
-        if (await bcrypt.compare(password, passwordFromDatabase)) {
-          // assign token to the user
-          assignTokenToUser(res, userId);
-        } else {
-          res.send({
-            loginStatusMsg: "You have entered an incorrect password !",
-          });
-          console.log("Incorrect password");
-          // await pool.end();
-        }
+      // if (isVerifiedEmail == true) {
+      if (await bcrypt.compare(password, passwordFromDatabase)) {
+        // assign token to the user
+        assignTokenToUser(res, userId);
       } else {
         res.send({
-          loginStatusMsg:
-            "This email is partly registered and not yet verified, so go to the email inbox and confirm the email we sent to complete registration.",
-          partlyRegisteredEmail: `${userEmail}`,
+          loginStatusMsg: "You have entered an incorrect password !",
         });
-        console.log(`Email ${userEmail} is partly registered`);
-        // keep this email being sent to the localStorage
+        console.log("Incorrect password");
         // await pool.end();
       }
+      // } else {
+      //   res.send({
+      //     loginStatusMsg:
+      //       "This email is partly registered and not yet verified, so go to the email inbox and confirm the email we sent to complete registration.",
+      //     partlyRegisteredEmail: `${userEmail}`,
+      //   });
+      //   console.log(`Email ${userEmail} is partly registered`);
+      //   // keep this email being sent to the localStorage
+      //   // await pool.end();
+      // }
     } else {
       res.send({ loginStatusMsg: "User does not exist !" });
       console.log("User does not exist");

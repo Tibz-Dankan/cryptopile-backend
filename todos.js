@@ -61,7 +61,15 @@ app.get("/api/get-todos/:userId", verifyToken, async (req, res) => {
     const decryptedTodos = [];
 
     encryptedTodos.forEach(
-      ({ todoid, userid, description, iv, timeofadd, dateofadd }) => {
+      ({
+        todoid,
+        userid,
+        description,
+        iv,
+        timeofadd,
+        dateofadd,
+        todomarkedcomplete,
+      }) => {
         //  decrypting todo description
         const decryptedDescription = decrypt({
           iv: `${iv}`,
@@ -74,6 +82,7 @@ app.get("/api/get-todos/:userId", verifyToken, async (req, res) => {
           description: decryptedDescription,
           timeofadd: timeofadd,
           dateofadd: dateofadd,
+          todomarkedcomplete: todomarkedcomplete,
         };
         decryptedTodos.push(todoObject);
       }
@@ -108,6 +117,21 @@ app.put("/api/edit-todo-description/:todoId", verifyToken, async (req, res) => {
   console.log(response.rows);
 });
 
+// Mark todo as complete
+app.put("/api/mark-todo-complete/:todoId", verifyToken, async (req, res) => {
+  const { todoId } = req.params;
+  const { todoMarkedComplete } = req.body;
+
+  const sql1 =
+    "UPDATE todo SET todoMarkedComplete = $1 WHERE todoId = $2 RETURNING todoMarkedComplete";
+  const updatePileDescription = await pool.query(sql1, [
+    todoMarkedComplete,
+    todoId,
+  ]);
+  const response = res.json(updatePileDescription);
+  console.log(response.rows);
+});
+
 //Delete todo description
 app.delete("/api/delete-todo/:todoId", verifyToken, async (req, res) => {
   try {
@@ -130,6 +154,6 @@ app.delete("/api/delete-todo/:todoId", verifyToken, async (req, res) => {
 // Authentication with Google api, facebook api, And Github api
 // All pictures with cloudinary (profile pictures, background pictures and any necessary form of pictures)
 // Date and time of creating an account by the user
-// cater for te age case when the token is deleted
+// cater for te edge case when the token is deleted
 
 module.exports = app;
