@@ -4,13 +4,14 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js",
-    "server": "nodemon app.js"
+    "start": "node src/app.js",
+    "server": "nodemon src/app.js"
   },
   "author": "Tibz",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.0.1",
+    "bluebird": "^3.7.2",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
@@ -30,7 +31,8 @@
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
     "pg": "^8.6.0",
-    "pg-cursor": "^2.6.0"
+    "pg-cursor": "^2.6.0",
+    "pg-promise": "^10.11.1"
   },
   "devDependencies": {
     "concurrently": "^6.0.2",
