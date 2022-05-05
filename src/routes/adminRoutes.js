@@ -5,15 +5,30 @@ const {
   getAdminProfile,
   adminVerifyUser,
   adminDeleteUser,
+  createAdmin,
+  logInAdmin,
+  generateAdminKey,
+  getAdminKeys,
+  verifyAdminKey,
 } = require("../controllers/adminController");
 
 const router = express.Router();
 router.get("/get-user-accounts", verifyToken, adminGetUsers);
-
 router.get("/get-admin-profile", verifyToken, getAdminProfile);
-
 router.put("/admin-verify-user/:userId", verifyToken, adminVerifyUser);
-
 router.delete("/admin-delete-user/:userId", verifyToken, adminDeleteUser);
+router.post("/signup-admin", createAdmin);
+router.post("/login-admin", logInAdmin);
+router.post(
+  "/generate-admin-key/:generatedById",
+  verifyToken,
+  generateAdminKey
+);
+router.get("/get-admin-key/:userId", verifyToken, getAdminKeys);
+router.post("/verify-admin-key", verifyAdminKey);
+
+// generate admin key
+// verify admin key
+// get admin key
 
 module.exports = router;

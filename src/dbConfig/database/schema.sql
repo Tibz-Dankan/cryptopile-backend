@@ -11,13 +11,13 @@ CREATE TABLE accounts (
    UNIQUE (email) 
 );
 
-CREATE TABLE admin (
-adminId SERIAL NOT NULL,
-adminFirstName VARCHAR(200) NOT NULL,
-adminLastName VARCHAR(200) NOT NULL,
-adminEmail VARCHAR(200) NOT NULL,
-adminCode INTEGER NOT NULL,
-adminPassword VARCHAR(200) NOT NULL
+-- This is should be created in production as well
+CREATE TABLE adminKeys (
+adminKeyId SERIAL PRIMARY KEY , 
+generatedBy INTEGER NOT NULL,
+adminKey VARCHAR(40) NOT NULL,
+createdOn VARCHAR (50) NOT NULL,
+usedBy INTEGER NOT NULL DEFAULT 0
 );
 
 CREATE TABLE todo (
@@ -41,6 +41,8 @@ CREATE TABLE imageUrl (
 ALTER TABLE todo ADD COLUMN dateOfAdd VARCHAR(20) NOT NULL DEFAULT 'Sun Feb 13 2022';     
 ALTER TABLE todo ADD COLUMN timeOfAdd VARCHAR(20) NOT NULL DEFAULT '4:30:42 PM';
 ALTER TABLE todo ADD COLUMN todoMarkedComplete BOOLEAN NOT NULL DEFAULT 'false';   
+ALTER TABLE accounts ADD COLUMN roles VARCHAR(15) NOT NULL DEFAULT 'user';
+
 
 
 -- DELETE SOME COLUMNS
