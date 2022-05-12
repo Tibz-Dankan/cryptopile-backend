@@ -7,7 +7,12 @@ const adminRoutes = require("./routes/adminRoutes");
 const { memoryUsage } = require("./utils/memoryUsage");
 const app = express();
 
-app.use(cors() || cors({ origin: process.env.PRODUCTION_URL }));
+
+if (process.env.NODE_ENV === "production"){
+  app.use(cors({origin: process.env.PRODUCTION_URL}));
+}else{
+  app.use(cors());
+}
 
 app.use(express.json());
 

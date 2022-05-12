@@ -208,11 +208,19 @@ const generateAdminKey = async (req, res) => {
 //Get admin keys
 const getAdminKeys = async (req, res) => {
   const { userId } = req.params;
+
+  const getAdminInfo = await Admin.getAdminById();
+  if (getAdminInfo.rows.length == 0) {
+    return res.status(404).json({
+      status: "fail",
+      msg: "You are not an admin",
+    });
+  }
   const keys = await Admin.getAdminKeysById(userId);
   if (keys.rows.length > 0) {
     res.status(200).json({
       status: "success",
-      keys,
+      keys: keys.rows,
     });
   } else {
     console.log("Failed to get admin keys");

@@ -13,7 +13,8 @@ const configForHerokuPostgres = {
 const db = new pg.Client(configForHerokuPostgres);
 db.connect((err) => {
   if (err) {
-    throw err;
+    // throw err;
+    console.log("Error:Failed to connect to the database");
   } else {
     console.log("Database successfully connected!");
   }

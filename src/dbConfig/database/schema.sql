@@ -26,8 +26,8 @@ CREATE TABLE todo (
     userName VARCHAR(100) NOT NULL,
     description VARCHAR(600) NOT NULL,
     iv VARCHAR(60) NOT NULL,
-    timeOfAdd TIME,
-    dateOfAdd TIMESTAMP
+    dateOfAdd VARCHAR(20) NOT NULL DEFAULT 'Sun Feb 13 2022',
+    timeOfAdd VARCHAR(20) NOT NULL DEFAULT '4:30:42 PM'
 );
 
 CREATE TABLE imageUrl (
@@ -38,10 +38,10 @@ CREATE TABLE imageUrl (
 );
 
 -- -- ADD THESE COLUMNS AGAIN WITH RIGHT DATA TYPES AND CONSTRAINTS
-ALTER TABLE todo ADD COLUMN dateOfAdd VARCHAR(20) NOT NULL DEFAULT 'Sun Feb 13 2022';     
-ALTER TABLE todo ADD COLUMN timeOfAdd VARCHAR(20) NOT NULL DEFAULT '4:30:42 PM';
-ALTER TABLE todo ADD COLUMN todoMarkedComplete BOOLEAN NOT NULL DEFAULT 'false';   
-ALTER TABLE accounts ADD COLUMN roles VARCHAR(15) NOT NULL DEFAULT 'user';
+-- ALTER TABLE todo ADD COLUMN dateOfAdd VARCHAR(20) NOT NULL DEFAULT 'Sun Feb 13 2022';     
+-- ALTER TABLE todo ADD COLUMN timeOfAdd VARCHAR(20) NOT NULL DEFAULT '4:30:42 PM';
+ALTER TABLE todo ADD COLUMN todoMarkedComplete BOOLEAN NOT NULL DEFAULT 'false'; -- to added in production as well
+ALTER TABLE accounts ADD COLUMN roles VARCHAR(15) NOT NULL DEFAULT 'user'; -- to created in production
 
 
 
@@ -49,3 +49,4 @@ ALTER TABLE accounts ADD COLUMN roles VARCHAR(15) NOT NULL DEFAULT 'user';
 -- ALTER TABLE todo DROP COLUMN dateOfAdd ;     
 -- ALTER TABLE todo DROP COLUMN timeOfAdd ;     
 
+ 
