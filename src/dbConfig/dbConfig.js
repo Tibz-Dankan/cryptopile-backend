@@ -5,9 +5,9 @@ const connectionString = `postgresql://${process.env.DB_USER}:${process.env.DB_P
 
 const configForHerokuPostgres = {
   connectionString: isProduction ? process.env.DATABASE_URL : connectionString,
-  ssl: {
-    rejectUnauthorized: false,
-  },
+  // ssl: {
+  //   rejectUnauthorized: false,
+  // },
 };
 
 const db = new pg.Client(configForHerokuPostgres);

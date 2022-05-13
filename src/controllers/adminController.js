@@ -131,10 +131,11 @@ const logInAdmin = async (req, res) => {
   if (response.rows.length > 0) {
     const passwordFromDatabase = response.rows[0].password;
     const isVerifiedEmail = response.rows[0].isverifiedemail;
-    userId = response.rows[0].userid;
+    const userId = response.rows[0].userid;
+    const role = response.rows[0].roles;
     // if (isVerifiedEmail == true) {
     if (await bcrypt.compare(password, passwordFromDatabase)) {
-      assignTokenToAdmin(res, userId);
+      assignTokenToAdmin(res, userId, role);
     } else {
       res.send({
         loginStatusMsg: "You have entered an incorrect password!",
@@ -160,7 +161,7 @@ const logInAdmin = async (req, res) => {
 };
 
 // function to assign a token to a user
-const assignTokenToAdmin = (res, userId) => {
+const assignTokenToAdmin = (res, userId, role) => {
   jwt.sign(
     { userId },
     process.env.ACCESS_SECRETE_TOKEN,
@@ -175,6 +176,7 @@ const assignTokenToAdmin = (res, userId) => {
           loginStatusMsg: "You have successfully logged in",
           userId,
           accessToken,
+          role,
         });
         console.log(userId);
       }

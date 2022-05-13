@@ -106,10 +106,11 @@ const login = async (req, res) => {
   if (response.rows.length > 0) {
     const passwordFromDatabase = response.rows[0].password;
     const isVerifiedEmail = response.rows[0].isverifiedemail;
-    userId = response.rows[0].userid;
+    const userId = response.rows[0].userid;
+    const role = response.rows[0].roles;
     // if (isVerifiedEmail == true) {
     if (await bcrypt.compare(password, passwordFromDatabase)) {
-      assignTokenToUser(res, userId);
+      assignTokenToUser(res, userId, role);
     } else {
       res.send({
         loginStatusMsg: "You have entered an incorrect password!",
@@ -135,7 +136,7 @@ const login = async (req, res) => {
 };
 
 // function to assign a token to a user
-const assignTokenToUser = (res, userId) => {
+const assignTokenToUser = (res, userId, role) => {
   jwt.sign(
     { userId },
     process.env.ACCESS_SECRETE_TOKEN,
@@ -150,6 +151,7 @@ const assignTokenToUser = (res, userId) => {
           loginStatusMsg: "You have successfully logged in",
           userId,
           accessToken,
+          role,
         });
         console.log(userId);
       }
