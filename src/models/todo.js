@@ -13,7 +13,7 @@ Todo.createTodo = (
 ) => {
   return db.query(
     "INSERT INTO todo(userId, userName, description, iv, timeOfAdd, dateOfAdd) VALUES($1, $2, $3, $4, $5, $6) RETURNING *",
-    [userId, userFirstName, encryptedTodoDescription, iv, dateOfAdd, timeOfAdd]
+    [userId, userFirstName, encryptedTodoDescription, iv, timeOfAdd, dateOfAdd]
   );
 };
 

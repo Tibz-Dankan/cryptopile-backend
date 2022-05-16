@@ -4,6 +4,8 @@ const Todo = require("../models/todo");
 const { sendEmailVerificationLink } = require("../utils/sendVerificationEmail");
 const { randomNumber } = require("../utils/generateRandomNumber");
 const crypto = require("crypto");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 const adminGetUsers = async (req, res) => {
   const response = await User.getAllUsers();
@@ -12,9 +14,9 @@ const adminGetUsers = async (req, res) => {
 };
 
 const getAdminProfile = async (req, res) => {
-  const { userId } = req.body;
+  const { userId } = req.params;
   const response = await Admin.getAdminById(userId);
-  res.json(response);
+  res.json(response.rows);
   console.log("Getting admin profile");
 };
 
@@ -47,6 +49,7 @@ const createAdmin = async (req, res) => {
   const { isVerifiedEmail } = req.body;
   const emailVerificationCode = randomNumber();
   const role = "admin";
+
   emailExistence.check(email, (error, response) => {
     if (error) {
       res.send({
@@ -96,7 +99,7 @@ const createNewAdmin = async (
     // Store the user details into the database
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const newUser = await User.createAdmin(
+    const newUser = await Admin.createAdmin(
       firstName,
       lastName,
       email,
@@ -125,7 +128,7 @@ const logInAdmin = async (req, res) => {
   const { email } = req.body;
   const { password } = req.body;
 
-  const response = await User.getAdminByEmail(email);
+  const response = await Admin.getAdminByEmail(email);
   console.log("user logging in!");
   // if (isObjectFilled(responseObject) === true) {
   if (response.rows.length > 0) {
@@ -190,6 +193,10 @@ const generateAdminKey = async (req, res) => {
   const { createdOn } = req.body;
   const randomKeyString = crypto.randomBytes(16).toString("hex");
 
+  const adminInfo = await Admin.getAdminById(generatedById);
+  if (adminInfo.rows.length == 0) {
+    return res.status(403).json({ status: "fail" });
+  }
   const response = await Admin.createAdminKey(
     generatedById,
     randomKeyString,
@@ -211,7 +218,7 @@ const generateAdminKey = async (req, res) => {
 const getAdminKeys = async (req, res) => {
   const { userId } = req.params;
 
-  const getAdminInfo = await Admin.getAdminById();
+  const getAdminInfo = await Admin.getAdminById(userId);
   if (getAdminInfo.rows.length == 0) {
     return res.status(404).json({
       status: "fail",
@@ -253,7 +260,7 @@ const verifyAdminKey = async (req, res) => {
       status: "success",
     });
   } else {
-    res.status(404).json({
+    res.status(200).json({
       status: "fail",
       msg: "Incorrect key",
     });

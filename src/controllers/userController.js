@@ -15,16 +15,7 @@ const signup = async (req, res) => {
   const { isVerifiedEmail } = req.body;
   const emailVerificationCode = randomNumber();
 
-  // createNewUser(
-  //   firstName,
-  //   lastName,
-  //   email,
-  //   password,
-  //   isVerifiedEmail,
-  //   emailVerificationCode,
-  //   res
-  // );
-
+  // TODO: To be uncommented when pushing to production
   emailExistence.check(email, (error, response) => {
     if (error) {
       res.send({
