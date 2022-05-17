@@ -6,6 +6,7 @@ const { randomNumber } = require("../utils/generateRandomNumber");
 const crypto = require("crypto");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const emailExistence = require("email-existence");
 
 const adminGetUsers = async (req, res) => {
   const response = await User.getAllUsers();
