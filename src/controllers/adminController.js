@@ -1,6 +1,7 @@
 const User = require("../models/user");
 const Admin = require("../models/admin");
 const Todo = require("../models/todo");
+const Image = require("../models/image");
 const { sendEmailVerificationLink } = require("../utils/sendVerificationEmail");
 const { randomNumber } = require("../utils/generateRandomNumber");
 const crypto = require("crypto");
@@ -137,9 +138,27 @@ const logInAdmin = async (req, res) => {
     const isVerifiedEmail = response.rows[0].isverifiedemail;
     const userId = response.rows[0].userid;
     const role = response.rows[0].roles;
+    const firstName = response.rows[0].firstname;
+    const lastName = response.rows[0].lastname;
+
+    // The Admin image
+    let imageUrl;
+    const getAdminImageUrl = await Image.getImageUrlById(userId);
+    if (getAdminImageUrl.rows.length > 0) {
+      imageUrl = getAdminImageUrl.rows[0].imageurl;
+    } else {
+      imageUrl == null;
+    }
+
+    // user info in the jwt -token
+    const userInfoToken = jwt.sign(
+      { userId, firstName, lastName, role, imageUrl },
+      process.env.ACCESS_SECRETE_TOKEN
+    );
+
     // if (isVerifiedEmail == true) {
     if (await bcrypt.compare(password, passwordFromDatabase)) {
-      assignTokenToAdmin(res, userId, role);
+      assignTokenToAdmin(res, userId, userInfoToken);
     } else {
       res.send({
         loginStatusMsg: "You have entered an incorrect password!",
@@ -159,13 +178,13 @@ const logInAdmin = async (req, res) => {
     // }
   }
   if (response.rows.length === 0) {
-    res.send({ loginStatusMsg: "Admin does not exist!" });
-    console.log("Admin does not exist");
+    res.send({ loginStatusMsg: "You are not an admin!" });
+    console.log("Admin does not exist(Not an admin)");
   }
 };
 
 // function to assign a token to a user
-const assignTokenToAdmin = (res, userId, role) => {
+const assignTokenToAdmin = (res, userId, userInfoToken) => {
   jwt.sign(
     { userId },
     process.env.ACCESS_SECRETE_TOKEN,
@@ -178,11 +197,10 @@ const assignTokenToAdmin = (res, userId, role) => {
       } else {
         res.send({
           loginStatusMsg: "You have successfully logged in",
-          userId,
           accessToken,
-          role,
+          userInfoToken,
         });
-        console.log(userId);
+        console.log("Admin login successful");
       }
     }
   );
@@ -196,7 +214,7 @@ const generateAdminKey = async (req, res) => {
 
   const adminInfo = await Admin.getAdminById(generatedById);
   if (adminInfo.rows.length == 0) {
-    return res.status(403).json({ status: "fail" });
+    return res.status(404).json({ status: "Failed to generate key" });
   }
   const response = await Admin.createAdminKey(
     generatedById,

@@ -102,15 +102,28 @@ const login = async (req, res) => {
     const firstName = response.rows[0].firstname;
     const lastName = response.rows[0].lastname;
 
+    // The user image
+    let imageUrl;
+    const getUserImageUrl = await Image.getImageUrlById(userId);
+    if (getUserImageUrl.rows.length > 0) {
+      imageUrl = getUserImageUrl.rows[0].imageurl;
+    } else {
+      imageUrl = null;
+    }
+    // image jwt -token
+    const userImageUrlToken = jwt.sign(
+      { imageUrl },
+      process.env.ACCESS_SECRETE_TOKEN
+    );
     // user info in the jwt -token
     const userInfoToken = jwt.sign(
-      { userId, firstName, lastName, role },
+      { userId, firstName, lastName, role, imageUrl },
       process.env.ACCESS_SECRETE_TOKEN
     );
 
     // if (isVerifiedEmail == true) {
     if (await bcrypt.compare(password, passwordFromDatabase)) {
-      assignTokenToUser(res, userId, role, userInfoToken);
+      assignTokenToUser(res, userId, userInfoToken);
     } else {
       res.send({
         loginStatusMsg: "You have entered an incorrect password!",
@@ -136,7 +149,7 @@ const login = async (req, res) => {
 };
 
 // function to assign a token to a user
-const assignTokenToUser = (res, userId, role, userInfoToken) => {
+const assignTokenToUser = (res, userId, userInfoToken) => {
   jwt.sign(
     { userId },
     process.env.ACCESS_SECRETE_TOKEN,
@@ -149,12 +162,10 @@ const assignTokenToUser = (res, userId, role, userInfoToken) => {
       } else {
         res.send({
           loginStatusMsg: "You have successfully logged in",
-          userId,
           accessToken,
-          role,
           userInfoToken,
         });
-        console.log(userId);
+        console.log("User Login successful");
       }
     }
   );

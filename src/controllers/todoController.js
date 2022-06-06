@@ -24,7 +24,11 @@ const createUserTodo = async (req, res) => {
       dateOfAdd,
       timeOfAdd
     );
-    res.json(insertTodoInDatabase.rows[0]);
+    if (insertTodoInDatabase.rows[0]) {
+      res.status(200).json({
+        status: "success",
+      });
+    }
     console.log("Todo added successfully");
   }
 };

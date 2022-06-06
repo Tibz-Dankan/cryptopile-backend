@@ -6,6 +6,7 @@ const verifyToken = (req, res, next) => {
   if (typeof authHeader !== "undefined") {
     const bearer = authHeader.split(" ");
     accessToken = bearer[1];
+    // console.log("token :", accessToken);
     jwt.verify(accessToken, process.env.ACCESS_SECRETE_TOKEN, (err, userId) => {
       if (err) {
         res.send({
