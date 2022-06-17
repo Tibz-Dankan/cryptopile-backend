@@ -5,6 +5,7 @@ const {
   login,
   verifyUser,
   getUserProfile,
+  editUserProfile,
   forgotPassword,
   passwordResetCode,
   updatePassword,
@@ -17,6 +18,7 @@ router.post("/signup", signup);
 router.post("/login", login);
 router.post("/verify-user-email/:id", verifyUser);
 router.get("/get-user-info/:userId", verifyToken, getUserProfile);
+router.put("/edit-user-profile/:userId", verifyToken, editUserProfile);
 router.post("/forgot-password", forgotPassword);
 router.post("/password-reset-code", passwordResetCode);
 router.put("/reset-password/:userId", updatePassword);

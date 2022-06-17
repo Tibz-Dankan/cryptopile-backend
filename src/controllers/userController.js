@@ -253,6 +253,53 @@ const getUserProfile = async (req, res) => {
   }
 };
 
+//Edit User Profile
+//TODO: full functionality to be implemented later
+const editUserProfile = async (req, res) => {
+  const { userId } = req.params;
+  const { firstName } = req.body;
+  const { lastName } = req.body;
+  const { email } = req.body;
+  console.log("Editing profile");
+  const getUserInfo = await User.getUserById(userId);
+  const emailFromDatabase = getUserInfo.rows[0].email;
+  // if (emailFromDatabase === email) {  // To implemented later
+  if (emailFromDatabase !== null) {
+    // This is temporary and should be removed
+    await User.updateUserProfile(
+      userId,
+      firstName,
+      lastName,
+      emailFromDatabase
+    );
+    res.status(200).json({ status: "success" }); //shorthand if statement
+  } else {
+    // // check the email validity and send email verification link
+    // emailExistence.check(email, async (error, response) => {
+    //   if (error) {
+    //     res.status(200).json({
+    //       emailValidationMsg:
+    //         "Sorry, an error occurred during process of validating your email",
+    //     });
+    //     console.log(error);
+    //   }
+    //   if (response) {
+    //     // TODO: First check  the email email to ensure that its does not exist in the database
+    //     // update user profile
+    //     const updateUserProfile = await User.updateUserProfile(
+    //       userId,
+    //       firstName,
+    //       lastName,
+    //       email
+    //     );
+    //     console.log(updateUserProfile); // to be
+    //     updateUserProfile.rows[0] &&
+    //       res.status(200).json({ status: "success" }); //shorthand if statement
+    //   }
+    // });
+  }
+};
+
 // forgot password
 const forgotPassword = async (req, res) => {
   const { userEmail } = req.body;
@@ -356,6 +403,7 @@ module.exports = {
   login,
   verifyUser,
   getUserProfile,
+  editUserProfile,
   forgotPassword,
   passwordResetCode,
   updatePassword,
