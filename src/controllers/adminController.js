@@ -245,17 +245,10 @@ const getAdminKeys = async (req, res) => {
     });
   }
   const keys = await Admin.getAdminKeysById(userId);
-  if (keys.rows.length > 0) {
-    res.status(200).json({
-      status: "success",
-      keys: keys.rows,
-    });
-  } else {
-    console.log("Failed to get admin keys");
-    res.status(404).json({
-      status: "fail",
-    });
-  }
+  res.status(200).json({
+    status: "success",
+    keys: keys.rows,
+  });
 };
 
 // Verify admin key
