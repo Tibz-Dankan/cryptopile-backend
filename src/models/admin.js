@@ -15,10 +15,11 @@ Admin.getAdminKeysById = (generatedById) => {
     generatedById,
   ]);
 };
-// Get the admin keys
+// Get the admin keys //by userId(admin id)
 Admin.getAllAdminKeys = () => {
   return db.query("SELECT * FROM adminKeys");
 };
+// Delete admin key by userId
 // update the admin key to a given user
 Admin.updateUserOfKey = (key, keyUsedBy) => {
   return db.query("UPDATE adminKeys SET usedBy = $1 WHERE adminKey = $2", [

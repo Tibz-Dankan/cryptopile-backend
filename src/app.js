@@ -3,14 +3,14 @@ const cors = require("cors");
 const todoRoutes = require("./routes/todoRoutes");
 const userRoutes = require("./routes/userRoutes");
 const adminRoutes = require("./routes/adminRoutes");
+const imageRoutes = require("./routes/imageRoutes");
 
 const { memoryUsage } = require("./utils/memoryUsage");
 const app = express();
 
-
-if (process.env.NODE_ENV === "production"){
-  app.use(cors({origin: process.env.PRODUCTION_URL}));
-}else{
+if (process.env.NODE_ENV === "production") {
+  app.use(cors({ origin: process.env.PRODUCTION_URL }));
+} else {
   app.use(cors());
 }
 
@@ -22,6 +22,8 @@ app.use("/", todoRoutes);
 app.use("/", userRoutes);
 // admin routes
 app.use("/", adminRoutes);
+// image routes
+app.use("/", imageRoutes);
 
 // call the memory usage function here
 memoryUsage();
