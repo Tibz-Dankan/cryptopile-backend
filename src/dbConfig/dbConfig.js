@@ -11,9 +11,9 @@ const credentialObjForLocalDev = {
 
 const credentialObjForProd = {
   connectionString: process.env.DATABASE_URL,
-  ssl: {
-    rejectUnauthorized: false,
-  },
+  // ssl: {
+  //   rejectUnauthorized: false,
+  // },
 };
 
 if (isProduction) {
