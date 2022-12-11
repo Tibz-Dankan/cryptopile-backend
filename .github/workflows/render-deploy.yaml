@@ -9,11 +9,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+<<<<<<< HEAD
         # - uses: actions/setup-node@v1 #Sets up node environment
         with:
           node-version: 14
       - name: deploy
         uses: johnbeynon/render-deploy-action@v0.0.8 # Action to deploy to render
+=======
+      - name: deploy
+        uses: johnbeynon/render-deploy-action # Action to deploy to render
+>>>>>>> fa224d9f8bab296256887b8d0262af0e9d0525c3
         with:
           service-id: ${{ secrets.RENDER_SERVICE_ID }}
           api-key: ${{ secrets.RENDER_API_KEY }}
