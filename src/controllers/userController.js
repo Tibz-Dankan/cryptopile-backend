@@ -15,33 +15,63 @@ const signup = async (req, res) => {
   const { isVerifiedEmail } = req.body;
   const emailVerificationCode = randomNumber();
 
-  // TODO: To be uncommented when pushing to production
-  emailExistence.check(email, (error, response) => {
-    if (error) {
-      res.send({
-        emailValidationMsg:
-          "Sorry, an error occurred during process of validating your email",
-      });
-      console.log(error);
-    }
-    if (response) {
-      createNewUser(
-        firstName,
-        lastName,
-        email,
-        password,
-        isVerifiedEmail,
-        emailVerificationCode,
-        res
+  const checkEmailInDatabase = await User.getUserByEmail(email);
+
+  if (checkEmailInDatabase.rows.length > 0) {
+    res.send({ emailValidationMsg: "This email is already registered !" });
+  } else {
+    // Store the user details into the database
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const newUser = await User.createUser(
+      firstName,
+      lastName,
+      email,
+      hashedPassword,
+      isVerifiedEmail,
+      emailVerificationCode
+    );
+    if (newUser.rows.length > 0) {
+      const verificationCode = newUser.rows[0].verificationcode;
+      const userId = newUser.rows[0].userid;
+      // sendEmailVerificationLink(email, userId, verificationCode);
+      res.json(newUser.rows[0]);
+      console.log(
+        `Email sent to: ${email} with id #${userId} and v_code: ${verificationCode}`
       );
-      console.log("Email validity is :" + response);
     } else {
-      res.send({
-        emailValidationMsg:
-          "It looks like this email does not exists or it is invalid !",
-      });
+      console.log("user signup failed !");
+      res.send({ msg: "Internal server error" });
     }
-  });
+  }
+
+  // // TODO: To be uncommented when pushing to production
+  // emailExistence.check(email, (error, response) => {
+  //   if (error) {
+  //     res.send({
+  //       emailValidationMsg:
+  //         "Sorry, an error occurred during process of validating your email",
+  //     });
+  //     console.log(error);
+  //   }
+  //   if (response) {
+  //     createNewUser(
+  //       firstName,
+  //       lastName,
+  //       email,
+  //       password,
+  //       isVerifiedEmail,
+  //       emailVerificationCode,
+  //       res
+  //     );
+  //     console.log("Email validity is :" + response);
+  //   } else {
+  //     res.send({
+  //       emailValidationMsg:
+  //         "It looks like this email does not exists or it is invalid !",
+  //     });
+  //   }
+  // });
 };
 
 //  function to create new user
