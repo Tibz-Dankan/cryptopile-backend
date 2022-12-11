@@ -1,4 +1,5 @@
 name: Deploy To Render
+# on: [push]
 on:
   push:
     branches:
@@ -8,12 +9,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-<<<<<<< HEAD
+        # - uses: actions/setup-node@v1 #Sets up node environment
+        with:
+          node-version: 14
       - name: deploy
-        uses: johnbeynon/render-deploy-action
-=======
-      - uses: actions/johnbeynon/render-deploy-action
->>>>>>> c31205bedd301f19adef52d1d6eb9d27b2940cdc
+        uses: johnbeynon/render-deploy-action@v0.0.8 # Action to deploy to render
         with:
           service-id: ${{ secrets.RENDER_SERVICE_ID }}
           api-key: ${{ secrets.RENDER_API_KEY }}
+# uses: South-Paw/action-netlify-deploy@v1.2.0
