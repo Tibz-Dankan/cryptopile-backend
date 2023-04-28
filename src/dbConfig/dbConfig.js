@@ -1,34 +1,39 @@
 require("dotenv").config();
-const pg = require("pg");
-const isProduction = process.env.NODE_ENV === "production";
-const connectionString = `postgresql://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_DATABASE}`;
 
-let credentialObject;
+const mysql = require("mysql2/promise");
 
-const credentialObjForLocalDev = {
-  connectionString: connectionString,
-};
+const connectionString = process.env.DATABASE_URL;
 
-const credentialObjForProd = {
-  connectionString: process.env.DATABASE_URL,
-  // ssl: {
-  //   rejectUnauthorized: false,
-  // },
-};
+// // create the connection to database
+// const connection = mysql.createConnection({
+//   host: "localhost",
+//   user: "root",
+//   database: "test",
+// });
 
-if (isProduction) {
-  credentialObject = credentialObjForProd;
-} else {
-  credentialObject = credentialObjForLocalDev;
-}
+const dbConnection = mysql.createConnection(connectionString);
+console.log("connected to mysql database 🪁");
 
-const db = new pg.Client(credentialObject);
-db.connect((err) => {
-  if (err) {
-    console.log("Error:Failed to connect to the database");
-  } else {
-    console.log("Database successfully connected!");
-  }
-});
+// // simple query
+// connection.query(
+//   'SELECT * FROM `table` WHERE `name` = "Page" AND `age` > 45',
+//   function (err, results, fields) {
+//     console.log(results); // results contains rows returned by server
+//     console.log(fields); // fields contains extra meta data about results, if available
+//   }
+// );
 
-module.exports = db;
+// // with placeholder
+// connection.query(
+//   "SELECT * FROM `table` WHERE `name` = ? AND `age` > ?",
+//   ["Page", 45],
+//   function (err, results) {
+//     console.log(results);
+//   }
+// );
+
+module.exports = { dbConnection };
+
+// How to connect to mysql via shell
+// 1. \sql
+// 2. \connect root@localhost and provide your password
