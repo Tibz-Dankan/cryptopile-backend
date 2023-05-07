@@ -15,33 +15,43 @@ const signup = async (req, res) => {
   const { isVerifiedEmail } = req.body;
   const emailVerificationCode = randomNumber();
 
-  // TODO: To be uncommented when pushing to production
-  emailExistence.check(email, (error, response) => {
-    if (error) {
-      res.send({
-        emailValidationMsg:
-          "Sorry, an error occurred during process of validating your email",
-      });
-      console.log(error);
-    }
-    if (response) {
-      createNewUser(
-        firstName,
-        lastName,
-        email,
-        password,
-        isVerifiedEmail,
-        emailVerificationCode,
-        res
-      );
-      console.log("Email validity is :" + response);
-    } else {
-      res.send({
-        emailValidationMsg:
-          "It looks like this email does not exists or it is invalid !",
-      });
-    }
-  });
+  // // TODO: To be uncommented when pushing to production
+  // emailExistence.check(email, (response, error) => {
+  //   if (error) {
+  //     res.send({
+  //       emailValidationMsg:
+  //         "Sorry, an error occurred during process of validating your email",
+  //     });
+  //     console.log(error);
+  //   }
+  //   if (response) {
+  //     createNewUser(
+  //       firstName,
+  //       lastName,
+  //       email,
+  //       password,
+  //       isVerifiedEmail,
+  //       emailVerificationCode,
+  //       res
+  //     );
+  //     console.log("Email validity is :" + response);
+  //   } else {
+  //     res.send({
+  //       emailValidationMsg:
+  //         "It looks like this email does not exists or it is invalid !",
+  //     });
+  //   }
+  // });
+
+  createNewUser(
+    firstName,
+    lastName,
+    email,
+    password,
+    isVerifiedEmail,
+    emailVerificationCode,
+    res
+  );
 };
 
 //  function to create new user
