@@ -1,9 +1,9 @@
-const { dbConnection } = require("../dbConfig/dbConfig");
+const db = require("../dbConfig/dbConfig");
 
 const User = {};
 
 // create user
-User.createUser = async (
+User.createUser = (
   firstName,
   lastName,
   email,
@@ -11,8 +11,8 @@ User.createUser = async (
   isVerifiedEmail,
   emailVerificationCode
 ) => {
-  return await dbConnection.query(
-    "INSERT INTO accounts(firstName, lastName, email, password, isVerifiedEmail, verificationCode) VALUES(?,?,?,?,?,?)  RETURNING *",
+  return db.query(
+    "INSERT INTO accounts(firstName, lastName, email, password, isVerifiedEmail, verificationCode) VALUES($1,$2,$3,$4,$5,$6)  RETURNING *",
     [
       firstName,
       lastName,
@@ -25,37 +25,26 @@ User.createUser = async (
 };
 
 // Get user by Id
-User.getUserById = async (userId) => {
-  return await dbConnection.query("SELECT * FROM accounts WHERE userId =?", [
-    userId,
-  ]);
+User.getUserById = (userId) => {
+  return db.query("SELECT * FROM accounts WHERE userId =$1", [userId]);
 };
 
 // Get user by Email
-User.getUserByEmail = async (email) => {
-  return await dbConnection.query(
-    "SELECT * FROM accounts WHERE email =?",
-    [email],
-    function (err, results) {
-      console.log(results);
-    }
-  );
+User.getUserByEmail = (email) => {
+  return db.query("SELECT * FROM accounts WHERE email =$1", [email]);
 };
 // Get user by Password Rest Code
 User.getUserByCode = (code) => {
-  return dbConnection.query(
-    "SELECT * FROM accounts WHERE verificationCode =?",
-    [code]
-  );
+  return db.query("SELECT * FROM accounts WHERE verificationCode =$1", [code]);
 };
 // Get all the users
 User.getAllUsers = () => {
-  return dbConnection.query("SELECT * FROM accounts ORDER BY userId ASC");
+  return db.query("SELECT * FROM accounts ORDER BY userId ASC");
 };
 
 // Update(edit) user
 User.updateUserProfile = (userId, firstName, lastName, email) => {
-  return dbConnection.query(
+  return db.query(
     "UPDATE accounts SET firstName = $1, lastName = $2, email= $3 WHERE userId = $4",
     [firstName, lastName, email, userId]
   );
@@ -63,7 +52,7 @@ User.updateUserProfile = (userId, firstName, lastName, email) => {
 
 // update password
 User.updatePassword = (newHashedPassword, userId, userEmail) => {
-  return dbConnection.query(
+  return db.query(
     "UPDATE accounts SET password = $1 WHERE id = $2 AND email =$3 RETURNING *",
     [newHashedPassword, userId, userEmail]
   );
@@ -71,7 +60,7 @@ User.updatePassword = (newHashedPassword, userId, userEmail) => {
 
 // update verification code
 User.updateVerificationCode = (userId, verificationCode) => {
-  return dbConnection.query(
+  return db.query(
     "UPDATE accounts SET verificationCode = $1 WHERE userId = $2 RETURNING *",
     [verificationCode, userId]
   );
@@ -79,7 +68,7 @@ User.updateVerificationCode = (userId, verificationCode) => {
 
 // verify user
 User.verifyUser = (userId) => {
-  return dbConnection.query(
+  return db.query(
     "UPDATE accounts SET isVerifiedEmail = TRUE WHERE userId = $1 RETURNING *",
     [userId]
   );
@@ -87,7 +76,7 @@ User.verifyUser = (userId) => {
 
 // Delete user
 User.deleteUser = (userId) => {
-  return dbConnection.query("DELETE FROM accounts WHERE userId = $1", [userId]);
+  return db.query("DELETE FROM accounts WHERE userId = $1", [userId]);
 };
 
 module.exports = User;

@@ -34,7 +34,7 @@ CREATE TABLE imageUrl (
      imageUrlId SERIAL PRIMARY KEY,
      imageUrlCategory VARCHAR (50) NOT NULL,
      imageUrlOwnerId INTEGER NOT NULL DEFAULT 20221501, 
-     imageUrl VARCHAR(250) NOT NULL DEFAULT ""
+     imageUrl VARCHAR(250) NOT NULL DEFAULT null
 );
 
  -- to added in production as well (DONE)
@@ -42,13 +42,13 @@ CREATE TABLE auth (
      authId SERIAL PRIMARY KEY,
      userId  INTEGER NOT NULL,
      token VARCHAR(150) NOT NULL, 
-     isOnline BOOLEAN NOT NULL DEFAULT false
+     isOnline BOOLEAN NOT NULL DEFAULT 'false'
 );
 
 -- -- ADD THESE COLUMNS AGAIN WITH RIGHT DATA TYPES AND CONSTRAINTS
 -- ALTER TABLE todo ADD COLUMN dateOfAdd VARCHAR(20) NOT NULL DEFAULT 'Sun Feb 13 2022';     
 -- ALTER TABLE todo ADD COLUMN timeOfAdd VARCHAR(20) NOT NULL DEFAULT '4:30:42 PM';
-ALTER TABLE todo ADD COLUMN todoMarkedComplete BOOLEAN NOT NULL DEFAULT false; -- to added in production as well(DONE)
+ALTER TABLE todo ADD COLUMN todoMarkedComplete BOOLEAN NOT NULL DEFAULT 'false'; -- to added in production as well(DONE)
 ALTER TABLE accounts ADD COLUMN roles VARCHAR(15) NOT NULL DEFAULT 'user'; -- to created in production
 
 
