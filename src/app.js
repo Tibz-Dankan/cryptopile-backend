@@ -4,6 +4,7 @@ const todoRoutes = require("./routes/todoRoutes");
 const userRoutes = require("./routes/userRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 const imageRoutes = require("./routes/imageRoutes");
+const { keepActiveController } = require("keep-apps-active");
 
 const { memoryUsage } = require("./utils/memoryUsage");
 const app = express();
@@ -24,6 +25,8 @@ app.use("/", userRoutes);
 app.use("/", adminRoutes);
 // image routes
 app.use("/", imageRoutes);
+
+keepActiveController(app);
 
 // call the memory usage function here
 memoryUsage();
